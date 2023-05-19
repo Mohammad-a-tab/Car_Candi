@@ -25,10 +25,12 @@ import { RamackCarModule } from './ramack_car/ramack_car.module';
 import { ToyotaController } from './toyota/toyota.controller';
 import { ToyotaService } from './toyota/toyota.service';
 import { ToyotaModule } from './toyota/toyota.module';
+import { ZamyadService } from './zamyad/zamyad.service';
+import { ZamyadModule } from './zamyad/zamyad.module';
 
 @Module({
-  imports: [IkcoModule, KiaModule, MazdaModule, SaipaModule, BahmanModule, HyundaModule, KermanMotorModule, ModiranCarModule, ParsCarModule, RamackCarModule, ToyotaModule],
+  imports: [IkcoModule, KiaModule, MazdaModule, SaipaModule, BahmanModule, HyundaModule, KermanMotorModule, ModiranCarModule, ParsCarModule, RamackCarModule, ToyotaModule, ZamyadModule],
   controllers: [AppController, IkcoController, MazdaController, BahmanController, HyundaController, KermanMotorController, ParsCarController, ToyotaController],
-  providers: [AppService, IkcoService, MazdaService, BahmanService, KermanMotorService, ParsCarService, ToyotaService],
+  providers: [AppService, IkcoService, MazdaService, BahmanService, KermanMotorService, ParsCarService, ToyotaService, ZamyadService],
 })
 export class AppModule {}
