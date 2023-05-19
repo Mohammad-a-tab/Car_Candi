@@ -5,10 +5,13 @@ import { IkcoController } from './ikco/ikco.controller';
 import { IkcoService } from './ikco/ikco.service';
 import { IkcoModule } from './ikco/ikco.module';
 import { KiaModule } from './kia/kia.module';
+import { MazdaService } from './mazda/mazda.service';
+import { MazdaController } from './mazda/mazda.controller';
+import { MazdaModule } from './mazda/mazda.module';
 
 @Module({
-  imports: [IkcoModule, KiaModule],
-  controllers: [AppController, IkcoController],
-  providers: [AppService, IkcoService],
+  imports: [IkcoModule, KiaModule, MazdaModule],
+  controllers: [AppController, IkcoController, MazdaController],
+  providers: [AppService, IkcoService, MazdaService],
 })
 export class AppModule {}
