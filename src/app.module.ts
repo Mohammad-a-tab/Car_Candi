@@ -22,10 +22,13 @@ import { ParsCarController } from './pars_car/pars_car.controller';
 import { ParsCarService } from './pars_car/pars_car.service';
 import { ParsCarModule } from './pars_car/pars_car.module';
 import { RamackCarModule } from './ramack_car/ramack_car.module';
+import { ToyotaController } from './toyota/toyota.controller';
+import { ToyotaService } from './toyota/toyota.service';
+import { ToyotaModule } from './toyota/toyota.module';
 
 @Module({
-  imports: [IkcoModule, KiaModule, MazdaModule, SaipaModule, BahmanModule, HyundaModule, KermanMotorModule, ModiranCarModule, ParsCarModule, RamackCarModule],
-  controllers: [AppController, IkcoController, MazdaController, BahmanController, HyundaController, KermanMotorController, ParsCarController],
-  providers: [AppService, IkcoService, MazdaService, BahmanService, KermanMotorService, ParsCarService],
+  imports: [IkcoModule, KiaModule, MazdaModule, SaipaModule, BahmanModule, HyundaModule, KermanMotorModule, ModiranCarModule, ParsCarModule, RamackCarModule, ToyotaModule],
+  controllers: [AppController, IkcoController, MazdaController, BahmanController, HyundaController, KermanMotorController, ParsCarController, ToyotaController],
+  providers: [AppService, IkcoService, MazdaService, BahmanService, KermanMotorService, ParsCarService, ToyotaService],
 })
 export class AppModule {}
