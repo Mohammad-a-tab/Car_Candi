@@ -9,10 +9,13 @@ import { MazdaService } from './mazda/mazda.service';
 import { MazdaController } from './mazda/mazda.controller';
 import { MazdaModule } from './mazda/mazda.module';
 import { SaipaModule } from './saipa/saipa.module';
+import { BahmanService } from './bahman/bahman.service';
+import { BahmanController } from './bahman/bahman.controller';
+import { BahmanModule } from './bahman/bahman.module';
 
 @Module({
-  imports: [IkcoModule, KiaModule, MazdaModule, SaipaModule],
-  controllers: [AppController, IkcoController, MazdaController],
-  providers: [AppService, IkcoService, MazdaService],
+  imports: [IkcoModule, KiaModule, MazdaModule, SaipaModule, BahmanModule],
+  controllers: [AppController, IkcoController, MazdaController, BahmanController],
+  providers: [AppService, IkcoService, MazdaService, BahmanService],
 })
 export class AppModule {}
