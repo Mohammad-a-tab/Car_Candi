@@ -12,10 +12,12 @@ import { SaipaModule } from './saipa/saipa.module';
 import { BahmanService } from './bahman/bahman.service';
 import { BahmanController } from './bahman/bahman.controller';
 import { BahmanModule } from './bahman/bahman.module';
+import { HyundaController } from './hyunda/hyunda.controller';
+import { HyundaModule } from './hyunda/hyunda.module';
 
 @Module({
-  imports: [IkcoModule, KiaModule, MazdaModule, SaipaModule, BahmanModule],
-  controllers: [AppController, IkcoController, MazdaController, BahmanController],
+  imports: [IkcoModule, KiaModule, MazdaModule, SaipaModule, BahmanModule, HyundaModule],
+  controllers: [AppController, IkcoController, MazdaController, BahmanController, HyundaController],
   providers: [AppService, IkcoService, MazdaService, BahmanService],
 })
 export class AppModule {}
