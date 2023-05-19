@@ -14,10 +14,13 @@ import { BahmanController } from './bahman/bahman.controller';
 import { BahmanModule } from './bahman/bahman.module';
 import { HyundaController } from './hyunda/hyunda.controller';
 import { HyundaModule } from './hyunda/hyunda.module';
+import { KermanMotorController } from './kerman_motor/kerman_motor.controller';
+import { KermanMotorService } from './kerman_motor/kerman_motor.service';
+import { KermanMotorModule } from './kerman_motor/kerman_motor.module';
 
 @Module({
-  imports: [IkcoModule, KiaModule, MazdaModule, SaipaModule, BahmanModule, HyundaModule],
-  controllers: [AppController, IkcoController, MazdaController, BahmanController, HyundaController],
-  providers: [AppService, IkcoService, MazdaService, BahmanService],
+  imports: [IkcoModule, KiaModule, MazdaModule, SaipaModule, BahmanModule, HyundaModule, KermanMotorModule],
+  controllers: [AppController, IkcoController, MazdaController, BahmanController, HyundaController, KermanMotorController],
+  providers: [AppService, IkcoService, MazdaService, BahmanService, KermanMotorService],
 })
 export class AppModule {}
