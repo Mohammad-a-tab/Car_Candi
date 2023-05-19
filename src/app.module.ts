@@ -21,9 +21,10 @@ import { ModiranCarModule } from './modiran_car/modiran_car.module';
 import { ParsCarController } from './pars_car/pars_car.controller';
 import { ParsCarService } from './pars_car/pars_car.service';
 import { ParsCarModule } from './pars_car/pars_car.module';
+import { RamackCarModule } from './ramack_car/ramack_car.module';
 
 @Module({
-  imports: [IkcoModule, KiaModule, MazdaModule, SaipaModule, BahmanModule, HyundaModule, KermanMotorModule, ModiranCarModule, ParsCarModule],
+  imports: [IkcoModule, KiaModule, MazdaModule, SaipaModule, BahmanModule, HyundaModule, KermanMotorModule, ModiranCarModule, ParsCarModule, RamackCarModule],
   controllers: [AppController, IkcoController, MazdaController, BahmanController, HyundaController, KermanMotorController, ParsCarController],
   providers: [AppService, IkcoService, MazdaService, BahmanService, KermanMotorService, ParsCarService],
 })
