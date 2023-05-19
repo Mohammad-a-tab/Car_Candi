@@ -17,9 +17,10 @@ import { HyundaModule } from './hyunda/hyunda.module';
 import { KermanMotorController } from './kerman_motor/kerman_motor.controller';
 import { KermanMotorService } from './kerman_motor/kerman_motor.service';
 import { KermanMotorModule } from './kerman_motor/kerman_motor.module';
+import { ModiranCarModule } from './modiran_car/modiran_car.module';
 
 @Module({
-  imports: [IkcoModule, KiaModule, MazdaModule, SaipaModule, BahmanModule, HyundaModule, KermanMotorModule],
+  imports: [IkcoModule, KiaModule, MazdaModule, SaipaModule, BahmanModule, HyundaModule, KermanMotorModule, ModiranCarModule],
   controllers: [AppController, IkcoController, MazdaController, BahmanController, HyundaController, KermanMotorController],
   providers: [AppService, IkcoService, MazdaService, BahmanService, KermanMotorService],
 })
