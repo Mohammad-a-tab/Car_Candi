@@ -1,18 +1,20 @@
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ObjectId, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 @Entity('users')
 export class User {
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
+    @ObjectId()
+    id: ObjectId;
     @Column({ nullable: true })
-    name: string;
+    car_name: string;
     @Column({ nullable: false, unique: true })
-    email: string;
+    mechanical: string;
     @Column({ nullable: false })
-    password: string
+    Injector: string
+    @Column({ nullable: false })
+    Wiring: string
+    @Column({ default: "" })
+    Engine: string;
     @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
     createdAt: Date;
     @UpdateDateColumn({ name: 'updated_at', type: 'timestamp' })
     updatedAt: Date
-    @Column({ default: "" })
-    token: string;
 }
