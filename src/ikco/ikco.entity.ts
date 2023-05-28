@@ -1,7 +1,7 @@
-import { Column, CreateDateColumn, Entity, ObjectId, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, ObjectId, UpdateDateColumn } from "typeorm";
 @Entity('users')
 export class User {
-    @ObjectId()
+    @PrimaryGeneratedColumn('uuid')
     id: ObjectId;
     @Column({ nullable: true })
     car_name: string;
