@@ -8,9 +8,9 @@ export class User {
     @Column({ nullable: false, unique: true })
     mechanical: string;
     @Column({ nullable: false })
-    Injector: string
+    Injector: string;
     @Column({ nullable: false })
-    Wiring: string
+    Wiring: string;
     @Column({ default: "" })
     Engine: string;
     @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
