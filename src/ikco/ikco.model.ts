@@ -7,16 +7,16 @@ export class Ikco extends Document {
   @Prop({ required: true })
   car_name: string;
 
-  @Prop({ required: true })
+  @Prop()
   mechanical: Content;
 
-  @Prop({ required: true })
+  @Prop()
   Injector: Content;
 
-  @Prop({ required: true })
+  @Prop()
   Wiring: Content;
 
-  @Prop({ required: true })
+  @Prop()
   Engine: Content;
   
 }

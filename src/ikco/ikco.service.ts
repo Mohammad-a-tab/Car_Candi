@@ -7,5 +7,7 @@ import { Ikco } from './ikco.model';
 export class IkcoService {
     constructor(@InjectModel(Ikco.name) private ikcoModel: Model<Ikco>) {}
 
-    
+    create() {
+        
+    }
 }
