@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Content } from "src/interface/content.interface";
 import { Document } from 'mongoose';
+import { Content } from 'src/public/public.model';
 
 @Schema()
 export class Ikco extends Document {

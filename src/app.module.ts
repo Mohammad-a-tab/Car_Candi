@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { IkcoModule } from './ikco/ikco.module';
 import { KiaModule } from './kia/kia.module';
 import { MazdaModule } from './mazda/mazda.module';
@@ -13,9 +11,11 @@ import { ParsCarModule } from './pars_car/pars_car.module';
 import { RamackCarModule } from './ramack_car/ramack_car.module';
 import { ToyotaModule } from './toyota/toyota.module';
 import { ZamyadModule } from './zamyad/zamyad.module';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
+    MongooseModule.forRoot('mongodb://localhost:27017/Car-Candi'),
     IkcoModule, 
     KiaModule, 
     MazdaModule, 
@@ -29,7 +29,5 @@ import { ZamyadModule } from './zamyad/zamyad.module';
     ToyotaModule, 
     ZamyadModule
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
