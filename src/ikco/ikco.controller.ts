@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Post, ValidationPipe } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiSecurity, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Get, Param, Post, ValidationPipe } from '@nestjs/common';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiParam, ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { IkcoService } from './ikco.service';
 import { Ikco } from './ikco.model';
 import { CreateIkcoDto } from './dto/create-ikco.dto';
+import { IkcoIdDto } from './dto/id-ikco.dto';
 
 @ApiTags('ikco')
 @ApiBearerAuth()
@@ -18,7 +19,17 @@ export class IkcoController {
     async findAll(): Promise<Ikco[]> {
         return this.ikcoService.findAll();
     }
-    
+
+    @Get('/:id')
+    @ApiParam({
+        name: 'id',
+        type: 'string',
+        description: 'Id of the Ikco',
+    })
+    getCategory(@Param(new ValidationPipe()) ikcoIdDto: IkcoIdDto): Promise<Ikco> {
+        return this.ikcoService.getIkco(ikcoIdDto);
+    }
+
     @Post('add')
     @ApiConsumes("application/x-www-form-urlencoded")
     @ApiBody({
