@@ -21,7 +21,7 @@ export class IkcoService {
     }
     async createIkco(createIkcoDto: CreateIkcoDto): Promise<Ikco>{
         const { car_name } = createIkcoDto;
-        const user = new this.ikcoModel({ car_name});
-        return user.save();
+        const ikco = new this.ikcoModel({ car_name});
+        return ikco.save();
     }
 }

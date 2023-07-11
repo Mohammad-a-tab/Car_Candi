@@ -26,7 +26,7 @@ export class IkcoController {
         type: 'string',
         description: 'Id of the Ikco',
     })
-    getCategory(@Param(new ValidationPipe()) ikcoIdDto: IkcoIdDto): Promise<Ikco> {
+    getIkco(@Param(new ValidationPipe()) ikcoIdDto: IkcoIdDto): Promise<Ikco> {
         return this.ikcoService.getIkco(ikcoIdDto);
     }
 
