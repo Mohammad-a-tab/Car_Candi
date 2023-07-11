@@ -6,6 +6,8 @@ import { CreateIkcoDto } from './dto/create-ikco.dto';
 import { IkcoIdDto } from './dto/id-ikco.dto';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { multerConfig } from '../utils/multer.config.js';
+import { UpdateIkcoDto } from './dto/update-ikco.dto';
+import { editPathImages } from '../utils/functions.js';
 
 @ApiTags('ikco')
 @ApiBearerAuth()
@@ -65,11 +67,11 @@ export class IkcoController {
         },
     })
     @UseInterceptors(FilesInterceptor('images', 10, multerConfig))
-    async updateProduct(
-        @Body(new ValidationPipe()) updateIkcoDto: UpdateProductDTO, 
+    async insertImageIkco(
+        @Body(new ValidationPipe()) updateIkcoDto: UpdateIkcoDto, 
         @UploadedFiles() files, 
     ): Promise<Ikco> {
-        editPathImages(files, updateProductDto);
-        return this.productService.updateProduct(updateProductDto, id);
+        editPathImages(files, updateIkcoDto);
+        return this.ikcoService.insertImageIkco(updateIkcoDto);
     }
 }

@@ -5,6 +5,7 @@ import { Ikco } from './ikco.model';
 import { CreateIkcoDto } from './dto/create-ikco.dto';
 import { IkcoIdDto } from './dto/id-ikco.dto';
 import { ObjectId } from 'mongodb';
+import { UpdateIkcoDto } from './dto/update-ikco.dto';
 
 @Injectable()
 export class IkcoService {
@@ -21,6 +22,11 @@ export class IkcoService {
     }
     async createIkco(createIkcoDto: CreateIkcoDto): Promise<Ikco>{
         const { car_name } = createIkcoDto;
+        const ikco = new this.ikcoModel({ car_name});
+        return ikco.save();
+    }
+    async insertImageIkco(updateIkcoDto: UpdateIkcoDto): Promise<Ikco>{
+        const { car_name } = updateIkcoDto;
         const ikco = new this.ikcoModel({ car_name});
         return ikco.save();
     }

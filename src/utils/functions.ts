@@ -1,10 +1,10 @@
-export function editPathImages (images, ProductDTO) {
+export function editPathImages (images, IkcoDto) {
     let paths = [];
     for (const image of images) {
         const path = image.path.replace(/\\/g, '/');
         paths.push(path);
     }
-    ProductDTO.images = paths;
+    IkcoDto.images = paths;
 }
 export function removeFieldEmpty(obj) {
     for (let key in obj) {
