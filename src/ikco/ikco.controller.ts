@@ -1,9 +1,11 @@
-import { Body, Controller, Get, Param, Post, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, UploadedFiles, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiParam, ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { IkcoService } from './ikco.service';
 import { Ikco } from './ikco.model';
 import { CreateIkcoDto } from './dto/create-ikco.dto';
 import { IkcoIdDto } from './dto/id-ikco.dto';
+import { FilesInterceptor } from '@nestjs/platform-express';
+import { multerConfig } from '../utils/multer.config.js';
 
 @ApiTags('ikco')
 @ApiBearerAuth()
@@ -44,5 +46,30 @@ export class IkcoController {
     })
     async createIkco(@Body(new ValidationPipe()) createIkcoDto: CreateIkcoDto, ): Promise<Ikco> {
         return this.ikcoService.createIkco(createIkcoDto);
+    }
+
+    @Patch('update/:id')
+    @ApiConsumes("multipart/form-data")
+    @ApiBody({
+        description: 'Update Images Ikco',
+        schema: {
+            type: 'object',
+            properties: {
+                title : { type: 'string' },
+                description : { type: 'string' },
+                images : { 
+                    type: 'array', items: { type: "string", format: "binary" }, 
+                    description: 'لطفا از ارسال تصاویر با نام فارسی خود داری بفرمایید' 
+                },
+            },
+        },
+    })
+    @UseInterceptors(FilesInterceptor('images', 10, multerConfig))
+    async updateProduct(
+        @Body(new ValidationPipe()) updateIkcoDto: UpdateProductDTO, 
+        @UploadedFiles() files, 
+    ): Promise<Ikco> {
+        editPathImages(files, updateProductDto);
+        return this.productService.updateProduct(updateProductDto, id);
     }
 }

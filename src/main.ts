@@ -5,7 +5,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  app.useStaticAssets('./public');
+  app.useStaticAssets('../public');
   const options = new DocumentBuilder()
   .setTitle('Car Candi')
   .setDescription('Build, implement and test Car Candi APIs')
