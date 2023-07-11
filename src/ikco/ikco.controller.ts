@@ -1,4 +1,4 @@
-import { Body, Controller, Post, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Post, ValidationPipe } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { IkcoService } from './ikco.service';
 import { Ikco } from './ikco.model';
@@ -14,6 +14,11 @@ export class IkcoController {
         private readonly ikcoService: IkcoService
     ) { }
 
+    @Get()
+    async findAll(): Promise<Ikco[]> {
+        return this.ikcoService.findAll();
+    }
+    
     @Post('add')
     @ApiConsumes("application/x-www-form-urlencoded")
     @ApiBody({
