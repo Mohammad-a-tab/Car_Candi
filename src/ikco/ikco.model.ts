@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { Content } from 'src/public/public.model';
 
-@Schema()
+@Schema({ timestamps: true, versionKey: false })
 export class Ikco extends Document {
   @Prop({ required: true })
   car_name: string;
@@ -18,7 +18,6 @@ export class Ikco extends Document {
 
   @Prop()
   Engine: Content;
-  
 }
 
 export const IkcoSchema = SchemaFactory.createForClass(Ikco);
