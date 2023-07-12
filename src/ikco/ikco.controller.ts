@@ -63,7 +63,12 @@ export class IkcoController {
                 description : { type: 'string' },
                 images : { 
                     type: 'array', items: { type: "string", format: "binary" }, 
-                    description: 'لطفا از ارسال تصاویر با نام فارسی خود داری بفرمایید' 
+                },
+                videos : { 
+                    type: 'array', items: { type: "string", format: "binary" }, 
+                },
+                PDFs : { 
+                    type: 'array', items: { type: "string", format: "binary" }, 
                 },
             },
         },

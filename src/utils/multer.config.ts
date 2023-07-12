@@ -1,7 +1,7 @@
 import { diskStorage } from 'multer';
 
 export const multerConfig = {
-    dest: './uploads',
+    dest: '../../public/uploads',
     storage: diskStorage({
         destination: './uploads',
         filename: (req, file, callback) => {
