@@ -57,6 +57,8 @@ export class IkcoController {
         schema: {
             type: 'object',
             properties: {
+                car_name : { type: 'string' },
+                fieldName : { type: 'string' },
                 title : { type: 'string' },
                 description : { type: 'string' },
                 images : { 
@@ -70,7 +72,7 @@ export class IkcoController {
     async insertImageIkco(
         @Body(new ValidationPipe()) updateIkcoDto: UpdateIkcoDto, 
         @UploadedFiles() files, 
-    ): Promise<Ikco> {
+    ): Promise<object> {
         editPathImages(files, updateIkcoDto);
         return this.ikcoService.insertImageIkco(updateIkcoDto);
     }

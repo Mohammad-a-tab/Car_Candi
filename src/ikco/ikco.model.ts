@@ -1,7 +1,24 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { Content } from 'src/public/public.model';
 
+
+@Schema({ versionKey: false })
+export class Content extends Document {
+  @Prop({ required: true })
+  title: string;
+
+  @Prop()
+  description: string;
+
+  @Prop()
+  videos: string[];
+
+  @Prop()
+  images: string[];
+
+  @Prop()
+  PDFs: string[];
+}
 @Schema({ timestamps: true, versionKey: false })
 export class Ikco extends Document {
   @Prop({ required: true })

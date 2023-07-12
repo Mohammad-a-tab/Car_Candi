@@ -25,9 +25,15 @@ export class IkcoService {
         const ikco = new this.ikcoModel({ car_name});
         return ikco.save();
     }
-    async insertImageIkco(updateIkcoDto: UpdateIkcoDto): Promise<Ikco>{
-        const { car_name } = updateIkcoDto;
-        const ikco = new this.ikcoModel({ car_name});
-        return ikco.save();
+    async insertImageIkco(updateIkcoDto: UpdateIkcoDto): Promise<object>{
+        const Content = {
+            Images_Section: {...updateIkcoDto}
+        }
+        const updateResult = await this.ikcoModel.updateOne({_id: '64ad8dbe1acdbe43db186e37'}, {
+            $set: {
+                'Engine.$.Content': Content
+            }
+        })
+        return updateResult
     }
 }
