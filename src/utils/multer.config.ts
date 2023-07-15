@@ -1,9 +1,9 @@
 import { diskStorage } from 'multer';
 
 export const multerConfigForImages = {
-    dest: '../../public/uploads',
+    dest: '../../public/uploads/images',
     storage: diskStorage({
-        destination: './uploads',
+        destination: '../../public/uploads/images',
         filename: (req, file, callback) => {
           const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
           const originalNameWithoutSpaces = file.originalname.replace(/\s/g, '');
@@ -24,9 +24,9 @@ export const multerConfigForImages = {
     },
 };
 export const multerConfigForVideos = {
-    dest: '../../public/uploads',
+    dest: '../../public/uploads/videos',
     storage: diskStorage({
-        destination: './uploads',
+        destination: '../../public/uploads/videos',
         filename: (req, file, callback) => {
           const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
           const originalNameWithoutSpaces = file.originalname.replace(/\s/g, '');
@@ -47,9 +47,9 @@ export const multerConfigForVideos = {
     },
 };
 export const multerConfigForPDFs = {
-    dest: '../../public/uploads',
+    dest: '../../public/uploads/PDFs',
     storage: diskStorage({
-        destination: './uploads',
+        destination: '../../public/uploads/PDFs',
         filename: (req, file, callback) => {
           const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
           const originalNameWithoutSpaces = file.originalname.replace(/\s/g, '');
@@ -58,11 +58,11 @@ export const multerConfigForPDFs = {
         },
     }),
     limits: {
-        fileSize: 1024 * 1024 * 5, // File size limit (5MB)
-        files: 10, // Maximum number of files allowed
+        fileSize: 1024 * 1024 * 50, // File size limit (50MB)
+        files: 5, // Maximum number of files allowed
     },
     fileFilter: (req, file, callback) => {
-        if (file.mimetype.match(/\/(jpg|jpeg|png|gif)$/)) {
+        if (file.mimetype.match(/\/(pdf)$/)) {
           callback(null, true);
         } else {
           callback(new Error('Invalid file type'));
