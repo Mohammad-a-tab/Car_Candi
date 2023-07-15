@@ -1,9 +1,9 @@
 import { ImageInfo } from "../interface/image-info.interface";
 
-export function editPathImages (images: Array<ImageInfo>, ikcoDTO): void {
+export function editPaths (contents, ikcoDTO): void {
     let paths = [];
-    for (const image of images) {
-        const path = image.path.replace(/\\/g, '/');
+    for (const content of contents) {
+        const path = content.path.replace(/\\/g, '/');
         paths.push(path);
     }
     ikcoDTO.images = paths;

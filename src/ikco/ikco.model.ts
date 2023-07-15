@@ -31,6 +31,9 @@ export class Ikco extends Document {
   Injector: Content;
 
   @Prop()
+  Air_bag: Content;
+
+  @Prop()
   Wiring: Content;
 
   @Prop()

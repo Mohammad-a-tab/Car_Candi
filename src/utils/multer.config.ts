@@ -36,7 +36,7 @@ export const multerConfigForVideos = {
     }),
     limits: {
         fileSize: 1024 * 1024 * 580, // File size limit (580MB)
-        files: 10, // Maximum number of files allowed
+        files: 3, // Maximum number of files allowed
     },
     fileFilter: (req, file, callback) => {
         if (file.mimetype.match(/\/(mp4|mov|mkv|mpg)$/)) {
