@@ -25,15 +25,19 @@ export class IkcoService {
         const ikco = new this.ikcoModel({ car_name});
         return ikco.save();
     }
-    async insertImageIkco(updateIkcoDto: UpdateIkcoDto): Promise<object>{
-        const Content = {
-            Images_Section: {...updateIkcoDto}
+    async updateIkco(updateIkcoDto: UpdateIkcoDto, car_name: string, fieldName: string): Promise<object>{
+        // const { title, description } = updateIkcoDto;
+        // const ikco = await this.ikcoModel.findOne({ car_name }).lean();
+        let updateResult = {};
+        if (fieldName === 'مکانیکی') {
+            updateResult = await this.ikcoModel.updateOne({ car_name }, { 
+                $set: { mechanical: updateIkcoDto }
+            })
         }
-        const updateResult = await this.ikcoModel.updateOne({_id: '64ad8dbe1acdbe43db186e37'}, {
-            $set: {
-                'Engine.$.Content': Content
-            }
-        })
+        else if (fieldName === 'انژکتوری') {}
+        else if (fieldName === 'کیسه هوا') {}
+        else if (fieldName === 'سیم کشی') {}
+        else if (fieldName === 'موتور') {}
         return updateResult
     }
 }

@@ -1,5 +1,5 @@
-import { Body, Controller, Get, Param, Patch, Post, UploadedFiles, UseInterceptors, ValidationPipe } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiParam, ApiSecurity, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Get, Param, Patch, Post, Query, UploadedFiles, UseInterceptors, ValidationPipe } from '@nestjs/common';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiParam, ApiQuery, ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { IkcoService } from './ikco.service';
 import { Ikco } from './ikco.model';
 import { CreateIkcoDto } from './dto/create-ikco.dto';
@@ -50,43 +50,49 @@ export class IkcoController {
         return this.ikcoService.createIkco(createIkcoDto);
     }
 
-    @Patch('update/:id')
+    @Patch('update')
     @ApiConsumes("multipart/form-data")
+    // @ApiParam({
+    //     name: 'car_name',
+    //     type: 'string',
+    //     description: 'car_name of the Ikco',
+    // })
+    // @ApiQuery({ name: 'fieldName', type: 'string' })
     @ApiBody({
         description: 'Update Images Ikco',
         schema: {
             type: 'object',
             properties: {
-                car_name : { type: 'string' },
-                fieldName : { type: 'string' },
                 title : { type: 'string' },
                 description : { type: 'string' },
                 images : { 
                     type: 'array', items: { type: "string", format: "binary" }, 
                 },
-                videos : { 
-                    type: 'array', items: { type: "string", format: "binary" }, 
-                },
-                PDFs : { 
-                    type: 'array', items: { type: "string", format: "binary" }, 
-                },
+                // videos : { 
+                //     type: 'array', items: { type: "string", format: "binary" }, 
+                // },
+                // PDFs : { 
+                //     type: 'array', items: { type: "string", format: "binary" }, 
+                // },
             },
         },
     })
     @UseInterceptors(
         FilesInterceptor('images', 10, multerConfigForImages),
-        FilesInterceptor('videos', 3, multerConfigForVideos),
-        FilesInterceptor('PDFs', 5, multerConfigForPDFs),
+        // FilesInterceptor('videos', 3, multerConfigForVideos),
+        // FilesInterceptor('PDFs', 5, multerConfigForPDFs),
         )
     async insertImageIkco(
-        @Body(new ValidationPipe()) updateIkcoDto: UpdateIkcoDto, 
+        @Body(new ValidationPipe()) updateIkcoDto: UpdateIkcoDto,
+        // @Param() car_name: string,
+        // @Query() fieldName: string,
         @UploadedFiles() imageFiles, 
-        @UploadedFiles() videoFiles, 
-        @UploadedFiles() PDFsFiles, 
+        // @UploadedFiles() videoFiles, 
+        // @UploadedFiles() PDFsFiles, 
     ): Promise<object> {
         editPaths(imageFiles, updateIkcoDto);
-        editPaths(videoFiles, updateIkcoDto);
-        editPaths(PDFsFiles, updateIkcoDto);
-        return this.ikcoService.insertImageIkco(updateIkcoDto);
+        // editPaths(videoFiles, updateIkcoDto);
+        // editPaths(PDFsFiles, updateIkcoDto);
+        return this.ikcoService.updateIkco(updateIkcoDto, "سمند", "مکانیکی");
     }
 }
