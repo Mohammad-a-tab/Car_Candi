@@ -19,7 +19,7 @@ export function editPaths (files) {
   
     
 }
-export function removeFieldEmpty(obj: object) {
+export function removeFieldEmpty(obj) {
     for (let key in obj) {
         if (obj[key] === null || obj[key].length === 0 || obj[key] === undefined || obj[key] === '') {
             delete obj[key];
