@@ -7,6 +7,8 @@ export function editPaths (contents, ikcoDTO): void {
         paths.push(path);
     }
     ikcoDTO.images = paths;
+    console.log(ikcoDTO);
+    
 }
 export function removeFieldEmpty(obj: object) {
     for (let key in obj) {

@@ -4,10 +4,11 @@ import { IkcoService } from './ikco.service';
 import { Ikco } from './ikco.model';
 import { CreateIkcoDto } from './dto/create-ikco.dto';
 import { IkcoIdDto } from './dto/id-ikco.dto';
-import { FilesInterceptor } from '@nestjs/platform-express';
+import { FileFieldsInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { UpdateIkcoDto } from './dto/update-ikco.dto';
 import { editPaths } from '../utils/functions.js';
-import { multerConfigForImages, multerConfigForPDFs, multerConfigForVideos } from 'src/utils/multer.config';
+import { Multer } from 'multer';
+import { multerConfig } from 'src/utils/multer.config';
 
 @ApiTags('ikco')
 @ApiBearerAuth()
@@ -65,34 +66,16 @@ export class IkcoController {
             properties: {
                 title : { type: 'string' },
                 description : { type: 'string' },
-                images : { 
+                files : { 
                     type: 'array', items: { type: "string", format: "binary" }, 
                 },
-                // videos : { 
-                //     type: 'array', items: { type: "string", format: "binary" }, 
-                // },
-                // PDFs : { 
-                //     type: 'array', items: { type: "string", format: "binary" }, 
-                // },
             },
         },
     })
-    @UseInterceptors(
-        FilesInterceptor('images', 10, multerConfigForImages),
-        // FilesInterceptor('videos', 3, multerConfigForVideos),
-        // FilesInterceptor('PDFs', 5, multerConfigForPDFs),
-        )
-    async insertImageIkco(
-        @Body(new ValidationPipe()) updateIkcoDto: UpdateIkcoDto,
-        // @Param() car_name: string,
-        // @Query() fieldName: string,
-        @UploadedFiles() imageFiles, 
-        // @UploadedFiles() videoFiles, 
-        // @UploadedFiles() PDFsFiles, 
-    ): Promise<object> {
-        editPaths(imageFiles, updateIkcoDto);
-        // editPaths(videoFiles, updateIkcoDto);
-        // editPaths(PDFsFiles, updateIkcoDto);
-        return this.ikcoService.updateIkco(updateIkcoDto, "سمند", "مکانیکی");
+    @UseInterceptors(FilesInterceptor('files', 20, multerConfig))
+    async updateFiles(@UploadedFiles() files) {
+      // Handle the received files here
+      // The files parameter will contain an array of files, each with a fieldname, originalname, and other details
+      console.log(files);
     }
 }

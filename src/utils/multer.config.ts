@@ -1,71 +1,55 @@
 import { diskStorage } from 'multer';
+import { extname } from 'path';
+import { transliterate } from 'transliteration';
 
-export const multerConfigForImages = {
-    dest: '../../public/uploads/images',
-    storage: diskStorage({
-        destination: '../../public/uploads/images',
-        filename: (req, file, callback) => {
-          const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-          const originalNameWithoutSpaces = file.originalname.replace(/\s/g, '');
-          const filename = `${uniqueSuffix}-${originalNameWithoutSpaces}`;
-          callback(null, filename);
-        },
-    }),
-    limits: {
-        fileSize: 1024 * 1024 * 15, // File size limit (15MB)
-        files: 10, // Maximum number of files allowed
+const allowedImageTypes = ["image/jpg", "image/jpeg", "image/png", "image/webp", "image/gif"];
+const allowedVideoTypes = ["video/mp4", "video/mpg", "video/mov", "video/avi", "video/mkv"];
+export const multerConfig = {
+  dest: './uploads', // Destination folder for uploaded files
+  fileFilter: (req, file, callback) => {
+    const allowedMimeTypes = [
+      'image/jpeg',
+      'image/png',
+      'image/webp',
+      'image/gif',
+      'image/jpg',
+      'video/mp4',
+      'video/mpg',
+      'video/mov',
+      'video/avi',
+      'video/mkv',
+      'application/pdf',
+    ];
+        
+    if (allowedMimeTypes.includes(file.mimetype)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Invalid file type.'));
+    }
+  },
+  storage: diskStorage({
+    destination: (req, file, callback) => {
+      if (allowedImageTypes.includes(file.mimetype)) {
+        callback(null, './public/uploads/images');
+      }
+      if (allowedVideoTypes.includes(file.mimetype)) {
+        callback(null, './public/uploads/videos');
+      }
+      if (file.mimetype === "application/pdf") {  
+        callback(null, './public/uploads/pdfs');
+      }
     },
-    fileFilter: (req, file, callback) => {
-        if (file.mimetype.match(/\/(jpg|jpeg|png|gif)$/)) {
-          callback(null, true);
-        } else {
-          callback(new Error('Invalid file type'));
-        }
+    filename: (req, file, callback) => {
+      // Generate a unique filename for each file
+      const uniqueSuffix = `${Date.now()}-${Math.round(
+        Math.random() * 1e9
+      )}`;
+      const extension = extname(file.originalname);
+      console.log(req.body);
+      
+      // const transliteratedName = transliterate(baseName);
+      const filename = `${'transliteratedName'}-${uniqueSuffix}${extension}`;
+      callback(null, filename);
     },
-};
-export const multerConfigForVideos = {
-    dest: '../../public/uploads/videos',
-    storage: diskStorage({
-        destination: '../../public/uploads/videos',
-        filename: (req, file, callback) => {
-          const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-          const originalNameWithoutSpaces = file.originalname.replace(/\s/g, '');
-          const filename = `${uniqueSuffix}-${originalNameWithoutSpaces}`;
-          callback(null, filename);
-        },
-    }),
-    limits: {
-        fileSize: 1024 * 1024 * 580, // File size limit (580MB)
-        files: 3, // Maximum number of files allowed
-    },
-    fileFilter: (req, file, callback) => {
-        if (file.mimetype.match(/\/(mp4|mov|mkv|mpg)$/)) {
-          callback(null, true);
-        } else {
-          callback(new Error('Invalid file type'));
-        }
-    },
-};
-export const multerConfigForPDFs = {
-    dest: '../../public/uploads/PDFs',
-    storage: diskStorage({
-        destination: '../../public/uploads/PDFs',
-        filename: (req, file, callback) => {
-          const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-          const originalNameWithoutSpaces = file.originalname.replace(/\s/g, '');
-          const filename = `${uniqueSuffix}-${originalNameWithoutSpaces}`;
-          callback(null, filename);
-        },
-    }),
-    limits: {
-        fileSize: 1024 * 1024 * 50, // File size limit (50MB)
-        files: 5, // Maximum number of files allowed
-    },
-    fileFilter: (req, file, callback) => {
-        if (file.mimetype.match(/\/(pdf)$/)) {
-          callback(null, true);
-        } else {
-          callback(new Error('Invalid file type'));
-        }
-    },
+  }),
 };
