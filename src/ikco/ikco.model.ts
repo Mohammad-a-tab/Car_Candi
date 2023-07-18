@@ -17,7 +17,7 @@ export class Content extends Document {
   images: string[];
 
   @Prop()
-  PDFs: string[];
+  pdfs: string[];
 }
 @Schema({ timestamps: true, versionKey: false })
 export class Ikco extends Document {

@@ -68,14 +68,17 @@ export class IkcoController {
                 description : { type: 'string' },
                 files : { 
                     type: 'array', items: { type: "string", format: "binary" }, 
+                    description: 'لطفا در بارگذازی فایل ها از ارسال فایل با نام فارسی خودداری بفرمایید'
                 },
             },
         },
     })
     @UseInterceptors(FilesInterceptor('files', 20, multerConfig))
-    async updateFiles(@UploadedFiles() files) {
-      // Handle the received files here
-      // The files parameter will contain an array of files, each with a fieldname, originalname, and other details
-      console.log(files);
+    async updateFiles(
+        @Body() updateIkcoDto: UpdateIkcoDto,
+        @UploadedFiles() files
+    ) {
+        console.log(files);
+        
     }
 }

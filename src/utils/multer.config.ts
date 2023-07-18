@@ -1,6 +1,5 @@
 import { diskStorage } from 'multer';
 import { extname } from 'path';
-import { transliterate } from 'transliteration';
 
 const allowedImageTypes = ["image/jpg", "image/jpeg", "image/png", "image/webp", "image/gif"];
 const allowedVideoTypes = ["video/mp4", "video/mpg", "video/mov", "video/avi", "video/mkv"];
@@ -41,14 +40,10 @@ export const multerConfig = {
     },
     filename: (req, file, callback) => {
       // Generate a unique filename for each file
-      const uniqueSuffix = `${Date.now()}-${Math.round(
-        Math.random() * 1e9
-      )}`;
+      const uniqueSuffix = `${new Date().getTime()}`;
       const extension = extname(file.originalname);
-      console.log(req.body);
-      
-      // const transliteratedName = transliterate(baseName);
-      const filename = `${'transliteratedName'}-${uniqueSuffix}${extension}`;
+      const baseName = file.originalname.replace(' ', '-');
+      const filename = `${baseName}-${uniqueSuffix}${extension}`;
       callback(null, filename);
     },
   }),
