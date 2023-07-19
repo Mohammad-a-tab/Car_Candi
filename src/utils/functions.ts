@@ -10,14 +10,16 @@ export function editPaths (files) {
             images.push(path);
         }
         else if (allowedVideoTypes.includes(file.mimetype)) {
-
+            const path = file.path.replace(/\\/g, "/")
+            videos.push(path);
         }
         else if (file.mimetype === 'application/pdf') {
-
+            const path = file.path.replace(/\\/g, "/")
+            pdfs.push(path);
         }
     }
   
-    
+    return {images, pdfs, videos };  
 }
 export function removeFieldEmpty(obj) {
     for (let key in obj) {

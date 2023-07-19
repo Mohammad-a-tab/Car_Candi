@@ -4,10 +4,9 @@ import { IkcoService } from './ikco.service';
 import { Ikco } from './ikco.model';
 import { CreateIkcoDto } from './dto/create-ikco.dto';
 import { IkcoIdDto } from './dto/id-ikco.dto';
-import { FileFieldsInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import { FilesInterceptor } from '@nestjs/platform-express';
 import { UpdateIkcoDto } from './dto/update-ikco.dto';
-import { editPaths } from '../utils/functions.js';
-import { Multer } from 'multer';
+import { editPaths } from '../utils/functions';
 import { multerConfig } from 'src/utils/multer.config';
 
 @ApiTags('ikco')
@@ -53,17 +52,13 @@ export class IkcoController {
 
     @Patch('update')
     @ApiConsumes("multipart/form-data")
-    // @ApiParam({
-    //     name: 'car_name',
-    //     type: 'string',
-    //     description: 'car_name of the Ikco',
-    // })
-    // @ApiQuery({ name: 'fieldName', type: 'string' })
+    @ApiQuery({ name: 'id', type: 'string', required: true })
     @ApiBody({
         description: 'Update Images Ikco',
         schema: {
             type: 'object',
             properties: {
+                car_name : { type: 'string' },
                 title : { type: 'string' },
                 description : { type: 'string' },
                 files : { 
@@ -76,9 +71,9 @@ export class IkcoController {
     @UseInterceptors(FilesInterceptor('files', 20, multerConfig))
     async updateFiles(
         @Body() updateIkcoDto: UpdateIkcoDto,
+        @Query('id') id: string,
         @UploadedFiles() files
-    ) {
-        console.log(files);
-        
+    ) {        
+        return this.ikcoService.updateIkco(updateIkcoDto, files, id);        
     }
 }

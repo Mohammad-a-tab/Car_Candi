@@ -25,19 +25,19 @@ export class Ikco extends Document {
   car_name: string;
 
   @Prop()
-  mechanical: Content;
+  mechanical: [Content];
 
   @Prop()
-  Injector: Content;
+  Injector: [Content];
 
   @Prop()
-  Air_bag: Content;
+  Air_bag: [Content];
 
   @Prop()
-  Wiring: Content;
+  Wiring: [Content];
 
   @Prop()
-  Engine: Content;
+  Engine: [Content];
 }
 
 export const IkcoSchema = SchemaFactory.createForClass(Ikco);
