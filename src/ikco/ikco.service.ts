@@ -36,12 +36,11 @@ export class IkcoService {
             videos,
             pdfs
         }
-        const ikco = this.ikcoModel.updateOne({ car_name, 'mechanical._id': id }, { 
-            $set: {
+        const ikco = this.ikcoModel.updateOne({ car_name }, { 
+            $push: {
                 mechanical: mechanical
             }
          })
-        
         
         return ikco;
     }

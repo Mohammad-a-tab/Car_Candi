@@ -52,7 +52,7 @@ export class IkcoController {
 
     @Patch('update')
     @ApiConsumes("multipart/form-data")
-    @ApiQuery({ name: 'id', type: 'string', required: true })
+    // @ApiQuery({ name: 'id', type: 'string', required: true })
     @ApiBody({
         description: 'Update Images Ikco',
         schema: {
@@ -71,9 +71,9 @@ export class IkcoController {
     @UseInterceptors(FilesInterceptor('files', 20, multerConfig))
     async updateFiles(
         @Body() updateIkcoDto: UpdateIkcoDto,
-        @Query('id') id: string,
+        // @Query('id') id: string,
         @UploadedFiles() files
     ) {        
-        return this.ikcoService.updateIkco(updateIkcoDto, files, id);        
+        return this.ikcoService.updateIkco(updateIkcoDto, files, "id");        
     }
 }
