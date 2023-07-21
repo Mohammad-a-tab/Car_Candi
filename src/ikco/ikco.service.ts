@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import { Ikco } from './ikco.model';
 import { CreateIkcoDto } from './dto/create-ikco.dto';
 import { IkcoIdDto } from './dto/id-ikco.dto';
@@ -29,19 +29,20 @@ export class IkcoService {
     async updateIkco(updateIkcoDto: UpdateIkcoDto, files, id: string): Promise<object>{
         const { car_name, title, description } = updateIkcoDto;
         const { images, videos, pdfs } = editPaths(files);
-        const mechanical = {
+        const content = {
+            _id: new mongoose.Types.ObjectId(),
             title,
             description,
             images,
             videos,
             pdfs
         }
-        const ikco = this.ikcoModel.updateOne({ car_name }, { 
-            $push: {
-                mechanical: mechanical
-            }
-         })
+        // const ikco = this.ikcoModel.updateOne({ car_name }, { 
+        //     $push: {
+        //         mechanical: mechanical
+        //     }
+        //  })
         
-        return ikco;
+        return {};
     }
 }

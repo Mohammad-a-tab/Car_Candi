@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
 
-@Schema({ versionKey: false })
+@Schema({ versionKey: false, _id: true })
 export class Content extends Document {
   @Prop({ required: true })
   title: string;
