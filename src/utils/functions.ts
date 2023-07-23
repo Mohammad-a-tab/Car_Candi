@@ -1,4 +1,4 @@
-export function editPaths(files) {
+export function editPaths(files: any) {
     const allowedImageTypes = ["image/jpg", "image/jpeg", "image/png", "image/webp", "image/gif"];
     const allowedVideoTypes = ["video/mp4", "video/mpg", "video/mov", "video/avi", "video/mkv"];
     let images = [];
@@ -21,7 +21,7 @@ export function editPaths(files) {
   
     return {images, pdfs, videos };  
 }
-export function removeFieldEmpty(obj) {
+export function removeFieldEmpty(obj: { [x: string]: any; }) {
     for (let key in obj) {
         if (obj[key] === null || obj[key].length === 0 || obj[key] === undefined || obj[key] === '') {
             delete obj[key];
@@ -29,6 +29,28 @@ export function removeFieldEmpty(obj) {
     }
     return obj
 }
-export function checkFieldName() {
+export function checkFieldName(fieldName?: string, id?: string) {
+    const fieldNameObject = {
+        mechanical: 'mechanical',
+        Injector: 'Injector',
+        Engine: 'Engine',
+        Air_bag: 'Air_bag',
+        Wiring: 'Wiring'
+    }
+    if (fieldName === "مکانیکی") {
+        return fieldNameObject.mechanical
+    }
+    else if (fieldName === "انژکتور") {
+        return fieldNameObject.Injector
+    }
+    else if (fieldName === "موتور") {
+        return fieldNameObject.Engine
+    }
+    else if (fieldName === "کیسه هوا") {
+        return fieldNameObject.Air_bag
+    }
+    else if (fieldName === "سیم کشی") {
+        return fieldNameObject.Wiring
+    }
     
 }

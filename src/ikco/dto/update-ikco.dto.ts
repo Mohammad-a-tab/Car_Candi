@@ -7,6 +7,10 @@ export class UpdateIkcoDto {
 
     @IsString()
     @IsNotEmpty()
+    fieldName: string;
+
+    @IsString()
+    @IsNotEmpty()
     title: string;
     
     @IsString()

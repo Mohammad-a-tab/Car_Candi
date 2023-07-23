@@ -7,6 +7,7 @@ import { IkcoIdDto } from './dto/id-ikco.dto';
 import { ObjectId } from 'mongodb';
 import { UpdateIkcoDto } from './dto/update-ikco.dto';
 import { editPaths } from 'src/utils/functions';
+import { checkFieldName } from '../utils/functions';
 
 @Injectable()
 export class IkcoService {
@@ -27,8 +28,9 @@ export class IkcoService {
         return ikco.save();
     }
     async createContent(updateIkcoDto: UpdateIkcoDto, files): Promise<object>{
-        const { car_name, title, description } = updateIkcoDto;
+        const { car_name, fieldName, title, description } = updateIkcoDto;
         const { images, videos, pdfs } = editPaths(files);
+        let UpdateResult = {}
         const content = {
             _id: new mongoose.Types.ObjectId(),
             title,
@@ -37,12 +39,28 @@ export class IkcoService {
             videos,
             pdfs
         }
-        // const ikco = this.ikcoModel.updateOne({ car_name }, { 
-        //     $push: {
-        //         mechanical: mechanical
-        //     }
-        //  })
+        if (fieldName === "مکانیکی") {
+            UpdateResult = this.ikcoModel.updateOne({ car_name }, { 
+                $push: {
+                    mechanical: content 
+                }
+            });
+        }
+        else if (fieldName === "انژکتور") {
+            return fieldNameObject.Injector
+        }
+        else if (fieldName === "موتور") {
+            return fieldNameObject.Engine
+        }
+        else if (fieldName === "کیسه هوا") {
+            return fieldNameObject.Air_bag
+        }
+        else if (fieldName === "سیم کشی") {
+            return fieldNameObject.Wiring
+        }
         
-        return {};
+
+        
+        return UpdateResult;
     }
 }
