@@ -1,4 +1,4 @@
-export function editPaths (files) {
+export function editPaths(files) {
     const allowedImageTypes = ["image/jpg", "image/jpeg", "image/png", "image/webp", "image/gif"];
     const allowedVideoTypes = ["video/mp4", "video/mpg", "video/mov", "video/avi", "video/mkv"];
     let images = [];
@@ -28,4 +28,7 @@ export function removeFieldEmpty(obj) {
         }
     }
     return obj
+}
+export function checkFieldName() {
+    
 }

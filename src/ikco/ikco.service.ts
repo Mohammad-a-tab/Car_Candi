@@ -26,7 +26,7 @@ export class IkcoService {
         const ikco = new this.ikcoModel({ car_name});
         return ikco.save();
     }
-    async updateIkco(updateIkcoDto: UpdateIkcoDto, files, id: string): Promise<object>{
+    async createContent(updateIkcoDto: UpdateIkcoDto, files): Promise<object>{
         const { car_name, title, description } = updateIkcoDto;
         const { images, videos, pdfs } = editPaths(files);
         const content = {
