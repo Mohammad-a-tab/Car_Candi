@@ -47,20 +47,38 @@ export class IkcoService {
             });
         }
         else if (fieldName === "انژکتور") {
-            return fieldNameObject.Injector
+            UpdateResult = this.ikcoModel.updateOne({ car_name }, { 
+                $push: {
+                    Injector: content 
+                }
+            });
         }
         else if (fieldName === "موتور") {
-            return fieldNameObject.Engine
+            UpdateResult = this.ikcoModel.updateOne({ car_name }, { 
+                $push: {
+                    Engine: content 
+                }
+            });
         }
         else if (fieldName === "کیسه هوا") {
-            return fieldNameObject.Air_bag
+            UpdateResult = this.ikcoModel.updateOne({ car_name }, { 
+                $push: {
+                    Air_bag: content 
+                }
+            });
         }
         else if (fieldName === "سیم کشی") {
-            return fieldNameObject.Wiring
+            UpdateResult = this.ikcoModel.updateOne({ car_name }, { 
+                $push: {
+                    Wiring: content 
+                }
+            });
         }
-        
-
-        
+        else {
+            UpdateResult = {
+                message: 'Update failed'
+            }
+        } 
         return UpdateResult;
     }
 }
