@@ -19,7 +19,7 @@ export class CreateContentDto {
 export class UpdateContentDto {    
     @IsString()
     @IsNotEmpty()
-    car_name: string;
+    fieldName: string;
 
     @IsString()
     @IsNotEmpty()

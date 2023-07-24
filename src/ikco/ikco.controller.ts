@@ -69,9 +69,9 @@ export class IkcoController {
     })
     @UseInterceptors(FilesInterceptor('files', 20, multerConfig))
     async updateFiles(
-        @Body() updateIkcoDto: CreateContentDto,
+        @Body() createContentDto: CreateContentDto,
         @UploadedFiles() files
     ) {        
-        return this.ikcoService.createContent(updateIkcoDto, files);        
+        return this.ikcoService.createContent(createContentDto, files);        
     }
 }

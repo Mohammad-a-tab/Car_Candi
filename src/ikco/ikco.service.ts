@@ -5,7 +5,7 @@ import { Ikco } from './ikco.model';
 import { CreateIkcoDto } from './dto/create-ikco.dto';
 import { IkcoIdDto } from './dto/id-ikco.dto';
 import { ObjectId } from 'mongodb';
-import { CreateContentDto } from './dto/update-ikco.dto';
+import { CreateContentDto, UpdateContentDto } from './dto/update-ikco.dto';
 import { editPaths } from 'src/utils/functions';
 
 @Injectable()
@@ -26,8 +26,8 @@ export class IkcoService {
         const ikco = new this.ikcoModel({ car_name});
         return ikco.save();
     }
-    async createContent(updateIkcoDto: CreateContentDto, files): Promise<object>{
-        const { car_name, fieldName, title, description } = updateIkcoDto;
+    async createContent(createContentDto: CreateContentDto, files): Promise<object>{
+        const { car_name, fieldName, title, description } = createContentDto;
         const { images, videos, pdfs } = editPaths(files);
         let UpdateResult = {}
         const content = {
@@ -80,8 +80,8 @@ export class IkcoService {
         } 
         return UpdateResult;
     }
-    async updateContent(updateIkcoDto: CreateContentDto, files, id: string): Promise<object>{
-        const { car_name, fieldName, title, description } = updateIkcoDto;
+    async updateContent(updateContentDto: UpdateContentDto, files): Promise<object>{
+        const { id, fieldName, title, description } = updateContentDto;
         const { images, videos, pdfs } = editPaths(files);
         let UpdateResult = {}
         const content = {
@@ -93,35 +93,35 @@ export class IkcoService {
             pdfs
         }
         if (fieldName === "مکانیکی") {
-            UpdateResult = this.ikcoModel.updateOne({ car_name }, { 
+            UpdateResult = this.ikcoModel.updateOne({ "mechanical._id": id }, { 
                 $push: {
                     mechanical: content 
                 }
             });
         }
         else if (fieldName === "انژکتور") {
-            UpdateResult = this.ikcoModel.updateOne({ car_name }, { 
+            UpdateResult = this.ikcoModel.updateOne({ "Injector._id": id }, { 
                 $push: {
                     Injector: content 
                 }
             });
         }
         else if (fieldName === "موتور") {
-            UpdateResult = this.ikcoModel.updateOne({ car_name }, { 
+            UpdateResult = this.ikcoModel.updateOne({ "Engine._id": id }, { 
                 $push: {
                     Engine: content 
                 }
             });
         }
         else if (fieldName === "کیسه هوا") {
-            UpdateResult = this.ikcoModel.updateOne({ car_name }, { 
+            UpdateResult = this.ikcoModel.updateOne({ "Air_bag._id": id }, { 
                 $push: {
                     Air_bag: content 
                 }
             });
         }
         else if (fieldName === "سیم کشی") {
-            UpdateResult = this.ikcoModel.updateOne({ car_name }, { 
+            UpdateResult = this.ikcoModel.updateOne({ "Wiring._id": id }, { 
                 $push: {
                     Wiring: content 
                 }
