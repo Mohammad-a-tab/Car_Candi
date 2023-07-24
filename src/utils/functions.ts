@@ -29,28 +29,3 @@ export function removeFieldEmpty(obj: { [x: string]: any; }) {
     }
     return obj
 }
-export function checkFieldName(fieldName?: string, id?: string) {
-    const fieldNameObject = {
-        mechanical: 'mechanical',
-        Injector: 'Injector',
-        Engine: 'Engine',
-        Air_bag: 'Air_bag',
-        Wiring: 'Wiring'
-    }
-    if (fieldName === "مکانیکی") {
-        return fieldNameObject.mechanical
-    }
-    else if (fieldName === "انژکتور") {
-        return fieldNameObject.Injector
-    }
-    else if (fieldName === "موتور") {
-        return fieldNameObject.Engine
-    }
-    else if (fieldName === "کیسه هوا") {
-        return fieldNameObject.Air_bag
-    }
-    else if (fieldName === "سیم کشی") {
-        return fieldNameObject.Wiring
-    }
-    
-}

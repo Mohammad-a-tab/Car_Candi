@@ -1,12 +1,11 @@
-import { Body, Controller, Get, Param, Patch, Post, Query, UploadedFiles, UseInterceptors, ValidationPipe } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiParam, ApiQuery, ApiSecurity, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Get, Param, Patch, Post, UploadedFiles, UseInterceptors, ValidationPipe } from '@nestjs/common';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiParam, ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { IkcoService } from './ikco.service';
 import { Ikco } from './ikco.model';
 import { CreateIkcoDto } from './dto/create-ikco.dto';
 import { IkcoIdDto } from './dto/id-ikco.dto';
 import { FilesInterceptor } from '@nestjs/platform-express';
-import { UpdateIkcoDto } from './dto/update-ikco.dto';
-import { editPaths } from '../utils/functions';
+import { CreateContentDto } from './dto/update-ikco.dto';
 import { multerConfig } from 'src/utils/multer.config';
 
 @ApiTags('ikco')
@@ -70,7 +69,7 @@ export class IkcoController {
     })
     @UseInterceptors(FilesInterceptor('files', 20, multerConfig))
     async updateFiles(
-        @Body() updateIkcoDto: UpdateIkcoDto,
+        @Body() updateIkcoDto: CreateContentDto,
         @UploadedFiles() files
     ) {        
         return this.ikcoService.createContent(updateIkcoDto, files);        
