@@ -5,7 +5,7 @@ import { Ikco } from './ikco.model';
 import { CreateIkcoDto } from './dto/create-ikco.dto';
 import { IkcoIdDto } from './dto/id-ikco.dto';
 import { FilesInterceptor } from '@nestjs/platform-express';
-import { CreateContentDto } from './dto/update-ikco.dto';
+import { CreateContentDto, UpdateContentDto } from './dto/update-ikco.dto';
 import { multerConfig } from 'src/utils/multer.config';
 
 @ApiTags('ikco')
@@ -49,7 +49,7 @@ export class IkcoController {
         return this.ikcoService.createIkco(createIkcoDto);
     }
 
-    @Patch('update')
+    @Patch('create/content')
     @ApiConsumes("multipart/form-data")
     @ApiBody({
         description: 'Update Images Ikco',
@@ -68,10 +68,35 @@ export class IkcoController {
         },
     })
     @UseInterceptors(FilesInterceptor('files', 20, multerConfig))
-    async updateFiles(
+    async createContent(
         @Body() createContentDto: CreateContentDto,
         @UploadedFiles() files
     ) {        
         return this.ikcoService.createContent(createContentDto, files);        
+    }
+    @Patch('update/content')
+    @ApiConsumes("multipart/form-data")
+    @ApiBody({
+        description: 'Update Images Ikco',
+        schema: {
+            type: 'object',
+            properties: {
+                id : { type: 'string' },
+                fieldName : { type: 'string' },
+                title : { type: 'string' },
+                description : { type: 'string' },
+                files : { 
+                    type: 'array', items: { type: "string", format: "binary" }, 
+                    description: 'لطفا در بارگذازی فایل ها از ارسال فایل با نام فارسی خودداری بفرمایید'
+                },
+            },
+        },
+    })
+    @UseInterceptors(FilesInterceptor('files', 20, multerConfig))
+    async updateContent(
+        @Body() updateContentDto: UpdateContentDto,
+        @UploadedFiles() files
+    ) {        
+        return this.ikcoService.updateContent(updateContentDto, files);        
     }
 }

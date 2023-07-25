@@ -41,7 +41,7 @@ export class IkcoService {
         if (fieldName === "مکانیکی") {
             UpdateResult = this.ikcoModel.updateOne({ car_name }, { 
                 $push: {
-                    mechanical: content 
+                    Mechanicals: content 
                 }
             });
         }
@@ -93,9 +93,9 @@ export class IkcoService {
             pdfs
         }
         if (fieldName === "مکانیکی") {
-            UpdateResult = this.ikcoModel.updateOne({ "mechanical._id": id }, { 
-                $push: {
-                    mechanical: content 
+            UpdateResult = this.ikcoModel.updateOne({ "mechanicals._id": id }, { 
+                $set: {
+                    'Mechanicals.$': content 
                 }
             });
         }
@@ -132,6 +132,17 @@ export class IkcoService {
                 message: 'Update failed'
             }
         } 
+        const ikco = await this.ikcoModel.findOne({'Mechanicals.title' : 'ممد'})
+        console.log(ikco, id);
+        
+
         return UpdateResult;
     }
+    // async getOneChapter(fieldName: string, contentId: string) {
+    //     const course = await this.ikcoModel.findOne({'': contentId})
+    //     if(!course) throw createHttpError.NotFound("No chapter was found with this specification");
+    //     const chapter = await course?.chapters?.[0]
+    //     if(!chapter) throw new createHttpError.NotFound("Chapter not found")
+    //     return copyObject(chapter)
+    // }
 }

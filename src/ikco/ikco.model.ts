@@ -25,7 +25,7 @@ export class Ikco extends Document {
   car_name: string;
 
   @Prop()
-  mechanical: [Content];
+  Mechanicals: [Content];
 
   @Prop()
   Injector: [Content];
