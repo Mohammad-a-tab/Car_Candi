@@ -93,7 +93,7 @@ export class IkcoService {
             pdfs
         }
         if (fieldName === "مکانیکی") {
-            UpdateResult = this.ikcoModel.updateOne({ "mechanicals._id": id }, { 
+            UpdateResult = this.ikcoModel.updateOne({ "Mechanicals._id": id }, { 
                 $set: {
                     'Mechanicals.$': content 
                 }
