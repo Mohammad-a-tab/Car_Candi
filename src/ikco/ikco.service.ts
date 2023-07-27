@@ -7,6 +7,7 @@ import { IkcoIdDto } from './dto/id-ikco.dto';
 import { ObjectId } from 'mongodb';
 import { CreateContentDto, UpdateContentDto } from './dto/update-ikco.dto';
 import { editPaths } from 'src/utils/functions';
+import { ikco } from './interface/ikco.interface';
 
 @Injectable()
 export class IkcoService {
@@ -136,25 +137,30 @@ export class IkcoService {
         return UpdateResult;
     }
     async getOneContent(fieldName: string, contentId: string) {
-        let ikco = {}
+        let ikco: ikco;
+        let content = {}
         if (fieldName === "مکانیکی") {
             ikco = await this.ikcoModel.findOne({'Mechanicals._id': contentId})
+            content = ikco?.Mechanicals?.[0]
         }
         else if (fieldName === "انژکتور") {
             ikco = await this.ikcoModel.findOne({'Injector._id': contentId})
+            content = ikco?.Injector?.[0]
         }
         else if (fieldName === "موتور") {
             ikco = await this.ikcoModel.findOne({'Engine': contentId})
+            content = ikco?.Engine?.[0]
         }
         else if (fieldName === "کیسه هوا") {
             ikco = await this.ikcoModel.findOne({'Air_bag._id': contentId})
+            content = ikco?.Air_bag?.[0]
         }
         else if (fieldName === "سیم کشی") {
             ikco = await this.ikcoModel.findOne({'Wiring._id': contentId})
+            content = ikco?.Wiring?.[0]
         }
         if(!ikco) throw new BadRequestException("No Ikco was found with this specification");
-        const chapter = await ikco?.chapters?.[0]
-        if(!chapter) throw new BadRequestException("Ikco not found")
-        return chapter
+        if(!content) throw new BadRequestException("Ikco not found")
+        return content
     }
 }
