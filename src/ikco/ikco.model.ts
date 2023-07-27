@@ -21,5 +21,5 @@ export class Ikco extends Document {
 
   @Prop({ type: [ContentSchema], default: [] })
   Engine: Content[];
-}``
+}
 export const IkcoSchema = SchemaFactory.createForClass(Ikco);

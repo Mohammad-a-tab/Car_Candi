@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
 import { Ikco } from './ikco.model';
@@ -31,7 +31,7 @@ export class IkcoService {
         const { images, videos, pdfs } = editPaths(files);
         let UpdateResult = {}
         const content = {
-            _id: new mongoose.Types.ObjectId(),
+            // _id: new mongoose.Types.ObjectId(),
             title,
             description,
             images,
@@ -132,17 +132,29 @@ export class IkcoService {
                 message: 'Update failed'
             }
         } 
-        const ikco = await this.ikcoModel.findOne({'Mechanicals.title' : 'ممد'})
-        console.log(ikco, id);
-        
-
+        const ikco = await this.ikcoModel.findOne({'Mechanicals._id' : id})
         return UpdateResult;
     }
-    // async getOneChapter(fieldName: string, contentId: string) {
-    //     const course = await this.ikcoModel.findOne({'': contentId})
-    //     if(!course) throw createHttpError.NotFound("No chapter was found with this specification");
-    //     const chapter = await course?.chapters?.[0]
-    //     if(!chapter) throw new createHttpError.NotFound("Chapter not found")
-    //     return copyObject(chapter)
-    // }
+    async getOneContent(fieldName: string, contentId: string) {
+        let ikco = {}
+        if (fieldName === "مکانیکی") {
+            ikco = await this.ikcoModel.findOne({'Mechanicals._id': contentId})
+        }
+        else if (fieldName === "انژکتور") {
+            ikco = await this.ikcoModel.findOne({'Injector._id': contentId})
+        }
+        else if (fieldName === "موتور") {
+            ikco = await this.ikcoModel.findOne({'Engine': contentId})
+        }
+        else if (fieldName === "کیسه هوا") {
+            ikco = await this.ikcoModel.findOne({'Air_bag._id': contentId})
+        }
+        else if (fieldName === "سیم کشی") {
+            ikco = await this.ikcoModel.findOne({'Wiring._id': contentId})
+        }
+        if(!ikco) throw new BadRequestException("No Ikco was found with this specification");
+        const chapter = await ikco?.chapters?.[0]
+        if(!chapter) throw new BadRequestException("Ikco not found")
+        return chapter
+    }
 }
