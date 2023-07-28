@@ -1,15 +1,11 @@
+import { content } from "./content.interface";
+
 export interface ikco {
-    Mechanicals: [{}];
-    Injector: [{}];
-    Engine: [{}];
-    Air_bag: [{}];
-    Wiring: [{}];
-}
-export interface content {
     _id: string;
-    title: string;
-    description: string;
-    videos: [];
-    images: [];
-    pdfs: [];
+    car_name: string;
+    Mechanicals: content[];
+    Injector: content[];
+    Engine: content[];
+    Air_bag: content[];
+    Wiring: content[];
 }

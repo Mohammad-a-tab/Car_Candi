@@ -94,14 +94,17 @@ export class IkcoService {
             pdfs
         }
         deleteInvalidPropertyInObject(content)
+        console.log(content);
         const newContent = {
             ...oldContent,
             ...content
         }
         if (fieldName === "مکانیکی") {
-            UpdateResult = await this.ikcoModel.updateOne({ "Mechanicals._id": id }, { 
-                $set: { 'Mechanicals.$': newContent }
-            });
+            UpdateResult = await this.ikcoModel.findOneAndUpdate(
+                { 'Mechanicals._id': id },
+                { $set: { ['Mechanicals.$']: newContent } },
+                { new: true } // Set 'new' to true to return the updated document
+              );
         }
         else if (fieldName === "انژکتور") {
             UpdateResult = this.ikcoModel.updateOne({ "Injector._id": id }, { 
