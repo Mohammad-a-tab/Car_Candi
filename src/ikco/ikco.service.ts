@@ -6,7 +6,7 @@ import { CreateIkcoDto } from './dto/create-ikco.dto';
 import { IkcoIdDto } from './dto/id-ikco.dto';
 import { ObjectId } from 'mongodb';
 import { CreateContentDto, UpdateContentDto } from './dto/update-ikco.dto';
-import { editPaths } from 'src/utils/functions';
+import { deleteInvalidPropertyInObject, editPaths, removeFieldEmpty } from 'src/utils/functions';
 import { ikco } from './interface/ikco.interface';
 
 @Injectable()
@@ -85,46 +85,49 @@ export class IkcoService {
         const { id, fieldName, title, description } = updateContentDto;
         const { images, videos, pdfs } = editPaths(files);
         let UpdateResult = {}
+        const oldContent = await this.getOneContent(fieldName, id);
         const content = {
-            _id: new mongoose.Types.ObjectId(),
             title,
             description,
             images,
             videos,
             pdfs
         }
+        deleteInvalidPropertyInObject(content)
+        const newContent = {
+            ...oldContent,
+            ...content
+        }
         if (fieldName === "مکانیکی") {
-            UpdateResult = this.ikcoModel.updateOne({ "Mechanicals._id": id }, { 
-                $set: {
-                    'Mechanicals.$': content 
-                }
+            UpdateResult = await this.ikcoModel.updateOne({ "Mechanicals._id": id }, { 
+                $set: { 'Mechanicals.$': newContent }
             });
         }
         else if (fieldName === "انژکتور") {
             UpdateResult = this.ikcoModel.updateOne({ "Injector._id": id }, { 
                 $push: {
-                    Injector: content 
+                    // Injector: content 
                 }
             });
         }
         else if (fieldName === "موتور") {
             UpdateResult = this.ikcoModel.updateOne({ "Engine._id": id }, { 
                 $push: {
-                    Engine: content 
+                    // Engine: content 
                 }
             });
         }
         else if (fieldName === "کیسه هوا") {
             UpdateResult = this.ikcoModel.updateOne({ "Air_bag._id": id }, { 
                 $push: {
-                    Air_bag: content 
+                    // Air_bag: content 
                 }
             });
         }
         else if (fieldName === "سیم کشی") {
             UpdateResult = this.ikcoModel.updateOne({ "Wiring._id": id }, { 
                 $push: {
-                    Wiring: content 
+                    // Wiring: content
                 }
             });
         }
@@ -138,7 +141,7 @@ export class IkcoService {
     }
     async getOneContent(fieldName: string, contentId: string) {
         let ikco: ikco;
-        let content = {}
+        let content;
         if (fieldName === "مکانیکی") {
             ikco = await this.ikcoModel.findOne({'Mechanicals._id': contentId})
             content = ikco?.Mechanicals?.[0]
@@ -161,6 +164,8 @@ export class IkcoService {
         }
         if(!ikco) throw new BadRequestException("No Ikco was found with this specification");
         if(!content) throw new BadRequestException("Ikco not found")
+        // removeFieldEmpty(content)
+        console.log(content);
         return content
     }
 }
