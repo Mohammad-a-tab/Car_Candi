@@ -8,6 +8,7 @@ import { ObjectId } from 'mongodb';
 import { CreateContentDto, UpdateContentDto } from './dto/update-ikco.dto';
 import { deleteInvalidPropertyInObject, editPaths, removeFieldEmpty, updateContentFunction } from 'src/utils/functions';
 import { ikco } from './interface/ikco.interface';
+import { content } from './interface/content.interface';
 
 @Injectable()
 export class IkcoService {
@@ -134,12 +135,11 @@ export class IkcoService {
                 message: 'Update failed'
             }
         } 
-        const ikco = await this.ikcoModel.findOne({'Mechanicals._id' : id})
         return UpdateResult;
     }
-    async getOneContent(fieldName: string, contentId: string) {
+    async getOneContent(fieldName: string, contentId: string): Promise<content> {
         let ikco: ikco;
-        let content;
+        let content: content;
         if (fieldName === "مکانیکی") {
             ikco = await this.ikcoModel.findOne({'Mechanicals._id': contentId})
             content = ikco?.Mechanicals?.[0]
@@ -162,8 +162,6 @@ export class IkcoService {
         }
         if(!ikco) throw new BadRequestException("No Ikco was found with this specification");
         if(!content) throw new BadRequestException("Ikco not found")
-        // removeFieldEmpty(content)
-        console.log(content);
         return content
     }
 }
