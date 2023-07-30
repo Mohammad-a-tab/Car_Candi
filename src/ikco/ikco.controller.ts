@@ -5,7 +5,7 @@ import { Ikco } from './ikco.model';
 import { CreateIkcoDto } from './dto/create-ikco.dto';
 import { IkcoIdDto } from './dto/id-ikco.dto';
 import { FilesInterceptor } from '@nestjs/platform-express';
-import { CreateContentDto, UpdateContentDto } from './dto/update-ikco.dto';
+import { UpdateIkcoDto } from './dto/update-ikco.dto';
 import { multerConfig } from 'src/utils/multer.config';
 
 @ApiTags('ikco')
@@ -48,19 +48,25 @@ export class IkcoController {
     async createIkco(@Body(new ValidationPipe()) createIkcoDto: CreateIkcoDto, ): Promise<Ikco> {
         return this.ikcoService.createIkco(createIkcoDto);
     }
-
-    @Patch('create/content')
+    @Patch('update')
     @ApiConsumes("multipart/form-data")
     @ApiBody({
         description: 'Update Images Ikco',
         schema: {
             type: 'object',
             properties: {
-                car_name : { type: 'string' },
-                fieldName : { type: 'string' },
-                title : { type: 'string' },
-                description : { type: 'string' },
-                files : { 
+                car_name: { type: 'string' },
+                id: { 
+                    type: 'string',
+                    description: 'این فیلد برای آپدیت محتوای از قبل ثبت شده الزامی است'
+                },
+                fieldName: { 
+                    type: 'array', items: { type: "string", 
+                    enum: ['Mechanicals', 'Engine', 'Air_bag', 'Injector', 'Wiring']} 
+                },
+                title: { type: 'string' },
+                description: { type: 'string' },
+                files: { 
                     type: 'array', items: { type: "string", format: "binary" }, 
                     description: 'لطفا در بارگذازی فایل ها از ارسال فایل با نام فارسی خودداری بفرمایید'
                 },
@@ -68,35 +74,10 @@ export class IkcoController {
         },
     })
     @UseInterceptors(FilesInterceptor('files', 20, multerConfig))
-    async createContent(
-        @Body() createContentDto: CreateContentDto,
-        @UploadedFiles() files
+    async updateIkco(
+        @Body(new ValidationPipe()) updateIkcoDto: UpdateIkcoDto,
+        @UploadedFiles(new ValidationPipe()) files
     ) {        
-        return this.ikcoService.createContent(createContentDto, files);        
-    }
-    @Patch('update/content')
-    @ApiConsumes("multipart/form-data")
-    @ApiBody({
-        description: 'Update Images Ikco',
-        schema: {
-            type: 'object',
-            properties: {
-                id : { type: 'string' },
-                fieldName : { type: 'string' },
-                title : { type: 'string' },
-                description : { type: 'string' },
-                files : { 
-                    type: 'array', items: { type: "string", format: "binary" }, 
-                    description: 'لطفا در بارگذازی فایل ها از ارسال فایل با نام فارسی خودداری بفرمایید'
-                },
-            },
-        },
-    })
-    @UseInterceptors(FilesInterceptor('files', 20, multerConfig))
-    async updateContent(
-        @Body() updateContentDto: UpdateContentDto,
-        @UploadedFiles() files
-    ) {        
-        return this.ikcoService.updateContent(updateContentDto, files);        
+        return this.ikcoService.updateIkco(updateIkcoDto, files);        
     }
 }

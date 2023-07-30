@@ -51,17 +51,17 @@ export function updateContentFunction(oldContent: content, content: content): co
     }
     if (content?.videos?.length > 0) {
         for (const video of content.videos) {
-            oldContent.videos.push(video);
+            oldContent?.videos.push(video);
         }
     }
     if (content?.images?.length > 0) {
         for (const image of content.images) {
-            oldContent.images.push(image);
+            oldContent?.images.push(image);
         }
     }
     if (content?.pdfs?.length > 0) {
         for (const pdf of content.pdfs) {
-            oldContent.pdfs.push(pdf);
+            oldContent?.pdfs.push(pdf);
         }
     }
     return oldContent

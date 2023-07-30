@@ -1,32 +1,17 @@
 import { IsNotEmpty, IsString } from "class-validator";
 
-export class CreateContentDto {    
+export class UpdateIkcoDto {    
     @IsString()
-    @IsNotEmpty()
-    car_name: string;
+    car_name?: string;
 
     @IsString()
     @IsNotEmpty()
-    fieldName: string;
+    fieldName: string[];
 
     @IsString()
-    @IsNotEmpty()
-    title: string;
-    
-    @IsString()
-    description: string;
-}
-export class UpdateContentDto {    
-    @IsString()
-    @IsNotEmpty()
-    fieldName: string;
+    id?: string;
 
     @IsString()
-    @IsNotEmpty()
-    id: string;
-
-    @IsString()
-    @IsNotEmpty()
     title: string;
     
     @IsString()
