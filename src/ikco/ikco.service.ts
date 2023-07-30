@@ -33,7 +33,6 @@ export class IkcoService {
         const { images, videos, pdfs } = editPaths(files);
         let UpdateResult = {}
         const content = {
-            // _id: new mongoose.Types.ObjectId(),
             title,
             description,
             images,
@@ -95,12 +94,11 @@ export class IkcoService {
             pdfs
         }
         deleteInvalidPropertyInObject(content)
-        console.log(content);
         if (fieldName === "مکانیکی") {
             const updateContent = updateContentFunction(oldContent, content);
             UpdateResult = await this.ikcoModel.updateOne({ 'Mechanicals._id': id }, {
                 $set: { 'Mechanicals.$': updateContent }
-            })
+            });
         }
         else if (fieldName === "انژکتور") {
             UpdateResult = this.ikcoModel.updateOne({ "Injector._id": id }, { 

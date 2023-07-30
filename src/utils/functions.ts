@@ -42,7 +42,7 @@ export function removeFieldEmpty(obj: { [x: string]: any; }) {
     }
     return obj
 }
-export function updateContentFunction(oldContent: content, content: content): object {
+export function updateContentFunction(oldContent: content, content: content): content {
     if (content.title) {
         oldContent.title = content.title;
     }
