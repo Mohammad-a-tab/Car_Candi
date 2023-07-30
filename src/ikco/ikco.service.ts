@@ -101,31 +101,27 @@ export class IkcoService {
             });
         }
         else if (fieldName === "انژکتور") {
-            UpdateResult = this.ikcoModel.updateOne({ "Injector._id": id }, { 
-                $push: {
-                    // Injector: content 
-                }
+            const updateContent = updateContentFunction(oldContent, content);
+            UpdateResult = await this.ikcoModel.updateOne({ 'Injector._id': id }, {
+                $set: { 'Injector.$': updateContent }
             });
         }
         else if (fieldName === "موتور") {
-            UpdateResult = this.ikcoModel.updateOne({ "Engine._id": id }, { 
-                $push: {
-                    // Engine: content 
-                }
+            const updateContent = updateContentFunction(oldContent, content);
+            UpdateResult = await this.ikcoModel.updateOne({ 'Engine._id': id }, {
+                $set: { 'Engine.$': updateContent }
             });
         }
         else if (fieldName === "کیسه هوا") {
-            UpdateResult = this.ikcoModel.updateOne({ "Air_bag._id": id }, { 
-                $push: {
-                    // Air_bag: content 
-                }
+            const updateContent = updateContentFunction(oldContent, content);
+            UpdateResult = await this.ikcoModel.updateOne({ 'Air_bag._id': id }, {
+                $set: { 'Air_bag.$': updateContent }
             });
         }
         else if (fieldName === "سیم کشی") {
-            UpdateResult = this.ikcoModel.updateOne({ "Wiring._id": id }, { 
-                $push: {
-                    // Wiring: content
-                }
+            const updateContent = updateContentFunction(oldContent, content);
+            UpdateResult = await this.ikcoModel.updateOne({ 'Wiring._id': id }, {
+                $set: { 'Wiring.$': updateContent }
             });
         }
         else {
