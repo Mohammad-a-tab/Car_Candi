@@ -23,7 +23,7 @@ export function editPaths(files: any) {
   
     return {images, pdfs, videos };  
 }
-export function deleteInvalidPropertyInObject(data = {}, blackListFields = []){
+export function deleteInvalidPropertyInObject(data = {}, blackListFields = []): void {
     let nullishData = ["", " ", "0", 0, null, undefined]
     Object.keys(data).forEach(key => {
         if(blackListFields.includes(key)) delete data[key]
