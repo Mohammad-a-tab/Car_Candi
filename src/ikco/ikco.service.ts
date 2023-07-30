@@ -82,10 +82,11 @@ export class IkcoService {
         return UpdateResult;
     }
     async updateContent(updateContentDto: UpdateContentDto, files): Promise<object>{
-        const { id, fieldName, title, description } = updateContentDto;
+        const { id, title, description } = updateContentDto;
         const { images, videos, pdfs } = editPaths(files);
         let UpdateResult = {}
-        const oldContent = await this.getOneContent(fieldName, id);
+        const fieldName = 'Mechanicals'
+        // const oldContent = await this.getOneContent(fieldName, id);
         const content = {
             title,
             description,
@@ -94,41 +95,11 @@ export class IkcoService {
             pdfs
         }
         deleteInvalidPropertyInObject(content)
-        if (fieldName === "مکانیکی") {
-            const updateContent = updateContentFunction(oldContent, content);
-            UpdateResult = await this.ikcoModel.updateOne({ 'Mechanicals._id': id }, {
-                $set: { 'Mechanicals.$': updateContent }
-            });
-        }
-        else if (fieldName === "انژکتور") {
-            const updateContent = updateContentFunction(oldContent, content);
-            UpdateResult = await this.ikcoModel.updateOne({ 'Injector._id': id }, {
-                $set: { 'Injector.$': updateContent }
-            });
-        }
-        else if (fieldName === "موتور") {
-            const updateContent = updateContentFunction(oldContent, content);
-            UpdateResult = await this.ikcoModel.updateOne({ 'Engine._id': id }, {
-                $set: { 'Engine.$': updateContent }
-            });
-        }
-        else if (fieldName === "کیسه هوا") {
-            const updateContent = updateContentFunction(oldContent, content);
-            UpdateResult = await this.ikcoModel.updateOne({ 'Air_bag._id': id }, {
-                $set: { 'Air_bag.$': updateContent }
-            });
-        }
-        else if (fieldName === "سیم کشی") {
-            const updateContent = updateContentFunction(oldContent, content);
-            UpdateResult = await this.ikcoModel.updateOne({ 'Wiring._id': id }, {
-                $set: { 'Wiring.$': updateContent }
-            });
-        }
-        else {
-            UpdateResult = {
-                message: 'Update failed'
-            }
-        } 
+        // const updateContent = updateContentFunction(oldContent, content);
+        // UpdateResult = await this.ikcoModel.updateOne({[`${fieldName}._id`]: id}, {
+        //     $set: { 'Mechanicals.$': updateContent }
+        // });
+        UpdateResult = await this.ikcoModel.findOne({[`${fieldName}._id`]: id});
         return UpdateResult;
     }
     async getOneContent(fieldName: string, contentId: string): Promise<content> {
