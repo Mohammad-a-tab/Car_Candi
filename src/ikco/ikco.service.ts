@@ -6,7 +6,7 @@ import { CreateIkcoDto } from './dto/create-ikco.dto';
 import { IkcoIdDto } from './dto/id-ikco.dto';
 import { ObjectId } from 'mongodb';
 import { CreateContentDto, UpdateContentDto } from './dto/update-ikco.dto';
-import { deleteInvalidPropertyInObject, editPaths, removeFieldEmpty } from 'src/utils/functions';
+import { deleteInvalidPropertyInObject, editPaths, removeFieldEmpty, updateContentFunction } from 'src/utils/functions';
 import { ikco } from './interface/ikco.interface';
 
 @Injectable()
@@ -95,16 +95,11 @@ export class IkcoService {
         }
         deleteInvalidPropertyInObject(content)
         console.log(content);
-        const newContent = {
-            ...oldContent,
-            ...content
-        }
         if (fieldName === "مکانیکی") {
-            UpdateResult = await this.ikcoModel.findOneAndUpdate(
-                { 'Mechanicals._id': id },
-                { $set: { ['Mechanicals.$']: newContent } },
-                { new: true } // Set 'new' to true to return the updated document
-              );
+            const updateContent = updateContentFunction(oldContent, content);
+            UpdateResult = await this.ikcoModel.updateOne({ 'Mechanicals._id': id }, {
+                $set: { 'Mechanicals.$': updateContent }
+            })
         }
         else if (fieldName === "انژکتور") {
             UpdateResult = this.ikcoModel.updateOne({ "Injector._id": id }, { 

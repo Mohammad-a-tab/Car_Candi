@@ -1,3 +1,5 @@
+import { content } from "src/ikco/interface/content.interface";
+
 export function editPaths(files: any) {
     const allowedImageTypes = ["image/jpg", "image/jpeg", "image/png", "image/webp", "image/gif"];
     const allowedVideoTypes = ["video/mp4", "video/mpg", "video/mov", "video/avi", "video/mkv"];
@@ -39,5 +41,29 @@ export function removeFieldEmpty(obj: { [x: string]: any; }) {
         }
     }
     return obj
+}
+export function updateContentFunction(oldContent: content, content: content): object {
+    if (content.title) {
+        oldContent.title = content.title;
+    }
+    if (content.description) {
+        oldContent.description = content.description;
+    }
+    if (content?.videos?.length > 0) {
+        for (const video of content.videos) {
+            oldContent.videos.push(video);
+        }
+    }
+    if (content?.images?.length > 0) {
+        for (const image of content.images) {
+            oldContent.images.push(image);
+        }
+    }
+    if (content?.pdfs?.length > 0) {
+        for (const pdf of content.pdfs) {
+            oldContent.pdfs.push(pdf);
+        }
+    }
+    return oldContent
 }
 
