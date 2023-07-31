@@ -43,10 +43,10 @@ export function removeFieldEmpty(obj: { [x: string]: any; }) {
     return obj
 }
 export function updateContentFunction(oldContent: content, content: content): content {
-    if (content.title) {
+    if (content?.title) {
         oldContent.title = content.title;
     }
-    if (content.description) {
+    if (content?.description) {
         oldContent.description = content.description;
     }
     if (content?.videos?.length > 0) {
@@ -64,6 +64,7 @@ export function updateContentFunction(oldContent: content, content: content): co
             oldContent?.pdfs.push(pdf);
         }
     }
+    console.log('old content: ', oldContent);
     return oldContent
 }
 

@@ -40,11 +40,13 @@ export class IkcoService {
             pdfs
         }
         deleteInvalidPropertyInObject(content);
+        console.log('content:', content);
+        
         if (id) {
             const oldContent = await this.getOneContent(fieldName, id);
             const updateContent = updateContentFunction(oldContent, content);
             UpdateResult = await this.ikcoModel.updateOne({[`${fieldName}._id`]: id}, {
-                $set: { [`${fieldName}.$`]: updateContent }
+                $set: {[`${fieldName}.$`]: updateContent }
             });
             if (!updateContent) return { message: 'Update Failed' }
             UpdateResult = await this.ikcoModel.findOne({ [`${fieldName}._id`]: id }).lean();
@@ -60,12 +62,30 @@ export class IkcoService {
         return UpdateResult;
     }
     async getOneContent(fieldName, contentId: string): Promise<content> {
-        try {
-            const ikco = await this.ikcoModel.findOne({ [`${fieldName}._id`]: contentId});
-            const content = ikco?.Mechanicals?.[0]
-            return content
-        } catch (error) {
-            throw new BadRequestException("No Ikco was found with this specification", error.message);
+        let ikco: ikco;
+        let content: content;
+        if (fieldName === 'Mechanicals') {
+            ikco = await this.ikcoModel.findOne({ 'Mechanicals._id': contentId });
+            content = ikco?.Mechanicals?.[0]
         }
+        else if (fieldName === 'Injector') {
+            ikco = await this.ikcoModel.findOne({ 'Injector._id': contentId });
+            content = ikco?.Injector?.[0]
+        }
+        else if (fieldName === 'Air_bag') {
+            ikco = await this.ikcoModel.findOne({ 'Air_bag._id': contentId });
+            content = ikco?.Air_bag?.[0]
+        }
+        else if (fieldName === 'Wiring') {
+            ikco = await this.ikcoModel.findOne({ 'Wiring._id': contentId });
+            content = ikco?.Wiring?.[0]
+        }
+        else if (fieldName === 'Engine') {
+            ikco = await this.ikcoModel.findOne({ 'Engine._id': contentId });
+            content = ikco?.Engine?.[0]
+        }
+        if(!ikco) throw new BadRequestException("No Ikco was found with this specification");
+        if(!content) throw new BadRequestException("ikco is not defined");
+        return content
     }
 }
