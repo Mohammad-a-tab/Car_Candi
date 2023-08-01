@@ -14,70 +14,50 @@ import { multerConfig } from 'src/utils/multer.config';
 // @UseGuards(AuthGuard())
 @ApiSecurity('bearerAuth')
 export class IkcoController {
-    constructor(
-        private readonly ikcoService: IkcoService
-    ) { }
+    constructor(private readonly ikcoService: IkcoService) {}
 
+    /**
+     * Get all Ikco cars.
+     */
     @Get()
     async findAll(): Promise<Ikco[]> {
         return this.ikcoService.findAll();
     }
 
-    @Get('/:id')
-    @ApiParam({
-        name: 'id',
-        type: 'string',
-        description: 'Id of the Ikco',
-    })
-    getIkco(@Param(new ValidationPipe()) ikcoIdDto: IkcoIdDto): Promise<Ikco> {
+    /**
+     * Get a specific Ikco car by ID.
+     * @param id The ID of the Ikco car.
+     */
+    @Get(':id')
+    @ApiParam({ name: 'id', description: 'ID of the Ikco car' })
+    getIkco(@Param() ikcoIdDto: IkcoIdDto): Promise<Ikco> {
         return this.ikcoService.getIkco(ikcoIdDto);
     }
 
-    @Post('add')
-    @ApiConsumes("application/x-www-form-urlencoded")
-    @ApiBody({
-        description: 'Create Ikco',
-        schema: {
-            type: 'object',
-            properties: {
-                car_name : { type: 'string' },
-            },
-            required: ['car_name'],
-        },
-    })
-    async createIkco(@Body(new ValidationPipe()) createIkcoDto: CreateIkcoDto, ): Promise<Ikco> {
+    /**
+     * Create a new Ikco car.
+     * @param createIkcoDto The data to create the Ikco car.
+     */
+    @Post()
+    @ApiConsumes('application/x-www-form-urlencoded')
+    @ApiBody({ type: CreateIkcoDto, description: 'Data to create a new Ikco car' })
+    async createIkco(@Body() createIkcoDto: CreateIkcoDto): Promise<Ikco> {
         return this.ikcoService.createIkco(createIkcoDto);
     }
-    @Patch('update')
-    @ApiConsumes("multipart/form-data")
-    @ApiBody({
-        description: 'Update Images Ikco',
-        schema: {
-            type: 'object',
-            properties: {
-                car_name: { type: 'string' },
-                id: { 
-                    type: 'string',
-                    description: 'این فیلد برای آپدیت محتوای از قبل ثبت شده الزامی است'
-                },
-                fieldName: { 
-                    type: 'array', items: { type: "string", 
-                    enum: ['Mechanicals', 'Engine', 'Air_bag', 'Injector', 'Wiring']} 
-                },
-                title: { type: 'string' },
-                description: { type: 'string' },
-                files: { 
-                    type: 'array', items: { type: "string", format: "binary" }, 
-                    description: 'لطفا در بارگذازی فایل ها از ارسال فایل با نام فارسی خودداری بفرمایید'
-                },
-            },
-        },
-    })
+
+    /**
+     * Update an Ikco car, including images or videos or pdfs.
+     * @param updateIkcoDto The data to update the Ikco car.
+     * @param files The uploaded images, videos, pdfs for the Ikco car.
+     */
+    @Patch()
+    @ApiConsumes('multipart/form-data')
+    @ApiBody({ type: UpdateIkcoDto, description: 'Data to update an existing Ikco car' })
     @UseInterceptors(FilesInterceptor('files', 20, multerConfig))
     async updateIkco(
-        @Body(new ValidationPipe()) updateIkcoDto: UpdateIkcoDto,
-        @UploadedFiles(new ValidationPipe()) files
-    ) {        
-        return this.ikcoService.updateIkco(updateIkcoDto, files);        
+        @Body() updateIkcoDto: UpdateIkcoDto,
+        @UploadedFiles() files,
+    ): Promise<any> {
+        return this.ikcoService.updateIkco(updateIkcoDto, files);
     }
 }

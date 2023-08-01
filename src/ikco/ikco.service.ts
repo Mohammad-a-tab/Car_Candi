@@ -1,14 +1,18 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import mongoose, { Model } from 'mongoose';
 import { Ikco } from './ikco.model';
 import { CreateIkcoDto } from './dto/create-ikco.dto';
 import { IkcoIdDto } from './dto/id-ikco.dto';
 import { ObjectId } from 'mongodb';
 import { UpdateIkcoDto } from './dto/update-ikco.dto';
-import { deleteInvalidPropertyInObject, editPaths, removeFieldEmpty, updateContentFunction } from 'src/utils/functions';
+import { 
+    deleteInvalidPropertyInObject,
+    editPaths,
+    updateContentFunction 
+} from 'src/utils/functions';
 import { ikco } from './interface/ikco.interface';
 import { content } from './interface/content.interface';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class IkcoService {
