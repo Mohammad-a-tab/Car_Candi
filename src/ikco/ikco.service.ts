@@ -40,8 +40,6 @@ export class IkcoService {
             pdfs
         }
         deleteInvalidPropertyInObject(content);
-        console.log('content:', content);
-        
         if (id) {
             const oldContent = await this.getOneContent(fieldName, id);
             const updateContent = updateContentFunction(oldContent, content);
