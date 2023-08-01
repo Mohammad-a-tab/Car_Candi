@@ -24,40 +24,48 @@ export class IkcoService {
         return ikco;
     }
     async createIkco(createIkcoDto: CreateIkcoDto): Promise<Ikco>{
-        const { car_name } = createIkcoDto;
-        const ikco = new this.ikcoModel({ car_name});
-        return ikco.save();
+        try {
+            const { car_name } = createIkcoDto;
+            const ikco = new this.ikcoModel({ car_name});
+            return ikco.save();
+        } catch (error) {
+            throw new Error(error.message);
+        }
     }
     async updateIkco(updateIkcoDto: UpdateIkcoDto, files): Promise<object>{
-        const { id, car_name, fieldName, title, description } = updateIkcoDto;
-        const { images, videos, pdfs } = editPaths(files);  
-        let UpdateResult = {}
-        const content = {
-            title,
-            description,
-            images,
-            videos,
-            pdfs
+        try {
+            const { id, car_name, fieldName, title, description } = updateIkcoDto;
+            const { images, videos, pdfs } = editPaths(files);  
+            let UpdateResult = {}
+            const content = {
+                title,
+                description,
+                images,
+                videos,
+                pdfs
+            }
+            deleteInvalidPropertyInObject(content);
+            if (id) {
+                const oldContent = await this.getOneContent(fieldName, id);
+                const updateContent = updateContentFunction(oldContent, content);
+                UpdateResult = await this.ikcoModel.updateOne({[`${fieldName}._id`]: id}, {
+                    $set: {[`${fieldName}.$`]: updateContent }
+                });
+                if (!updateContent) throw new Error('Update Failed');
+                UpdateResult = await this.ikcoModel.findOne({ [`${fieldName}._id`]: id }).lean();
+            }
+            else {
+                await this.ikcoModel.updateOne({ car_name }, { 
+                    $push: {
+                        [`${fieldName}`]: content 
+                    }
+                });
+                UpdateResult = await this.ikcoModel.findOne({ car_name }).lean();
+            }
+            return UpdateResult;
+        } catch (error) {
+            throw new Error(error.message);
         }
-        deleteInvalidPropertyInObject(content);
-        if (id) {
-            const oldContent = await this.getOneContent(fieldName, id);
-            const updateContent = updateContentFunction(oldContent, content);
-            UpdateResult = await this.ikcoModel.updateOne({[`${fieldName}._id`]: id}, {
-                $set: {[`${fieldName}.$`]: updateContent }
-            });
-            if (!updateContent) return { message: 'Update Failed' }
-            UpdateResult = await this.ikcoModel.findOne({ [`${fieldName}._id`]: id }).lean();
-        }
-        else {
-            await this.ikcoModel.updateOne({ car_name }, { 
-                $push: {
-                    [`${fieldName}`]: content 
-                }
-            });
-            UpdateResult = await this.ikcoModel.findOne({ car_name }).lean();
-        }
-        return UpdateResult;
     }
     async getOneContent(fieldName, contentId: string): Promise<content> {
         let ikco: ikco;
