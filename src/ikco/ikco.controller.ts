@@ -44,20 +44,37 @@ export class IkcoController {
     async createIkco(@Body() createIkcoDto: CreateIkcoDto): Promise<Ikco> {
         return this.ikcoService.createIkco(createIkcoDto);
     }
-
-    /**
-     * Update an Ikco car, including images or videos or pdfs.
-     * @param updateIkcoDto The data to update the Ikco car.
-     * @param files The uploaded images, videos, pdfs for the Ikco car.
-     */
-    @Patch()
-    @ApiConsumes('multipart/form-data')
-    @ApiBody({ type: UpdateIkcoDto, description: 'Data to update an existing Ikco car' })
+    
+    @Patch('update')
+    @ApiConsumes("multipart/form-data")
+    @ApiBody({
+        description: 'Update Images Ikco',
+        schema: {
+            type: 'object',
+            properties: {
+                car_name: { type: 'string' },
+                id: { 
+                    type: 'string',
+                    description: 'این فیلد برای آپدیت محتوای از قبل ثبت شده الزامی است'
+                },
+                fieldName: { 
+                    type: 'array', items: { type: "string", 
+                    enum: ['Mechanicals', 'Engine', 'Air_bag', 'Injector', 'Wiring']} 
+                },
+                title: { type: 'string' },
+                description: { type: 'string' },
+                files: { 
+                    type: 'array', items: { type: "string", format: "binary" }, 
+                    description: 'لطفا در بارگذازی فایل ها از ارسال فایل با نام فارسی خودداری بفرمایید'
+                },
+            },
+        },
+    })
     @UseInterceptors(FilesInterceptor('files', 20, multerConfig))
     async updateIkco(
-        @Body() updateIkcoDto: UpdateIkcoDto,
-        @UploadedFiles() files,
-    ): Promise<any> {
-        return this.ikcoService.updateIkco(updateIkcoDto, files);
+        @Body(new ValidationPipe()) updateIkcoDto: UpdateIkcoDto,
+        @UploadedFiles(new ValidationPipe()) files
+    ) {        
+        return this.ikcoService.updateIkco(updateIkcoDto, files);        
     }
 }
