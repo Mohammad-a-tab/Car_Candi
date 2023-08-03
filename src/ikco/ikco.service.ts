@@ -6,7 +6,7 @@ import { Ikco } from './ikco.model';
 import { CreateIkcoDto } from './dto/create-ikco.dto';
 import { IkcoIdDto } from './dto/id-ikco.dto';
 import { UpdateIkcoDto } from './dto/update-ikco.dto';
-import { ContentFindOneDto } from './dto/content-fineOne.dto';
+// import { ContentFindOneDto } from './dto/content-fineOne.dto';
 import { Content } from './interface/content.interface';
 import {
   deleteInvalidPropertyInObject,
@@ -14,6 +14,7 @@ import {
   updateContentFunction,
 } from 'src/utils/functions';
 import { CreateIkcoFailedException, IkcoNotFoundException, UpdateFailedException } from './custom-exceptions';
+import { ContentFindOneDto } from './dto/content-fineOne.dto';
 
 @Injectable()
 export class IkcoService {
@@ -30,8 +31,8 @@ export class IkcoService {
         return ikco;
     }
 
-    async getIkcoContent(contentFindOneDto: ContentFindOneDto): Promise<Content> {
-        const { id, fieldName } = contentFindOneDto;
+    async getIkcoContent(contentFineOneDto: ContentFindOneDto): Promise<Content> {
+        const { id, fieldName } = contentFineOneDto;
         const content = await this.getOneContent(fieldName, id);
         return content;
     }
@@ -96,6 +97,7 @@ export class IkcoService {
           Wiring: 'Wiring',
           Engine: 'Engine',
         };
+
         const property = fieldsToProperties[fieldName];
         if (!property) {
           throw new BadRequestException('Invalid fieldName');

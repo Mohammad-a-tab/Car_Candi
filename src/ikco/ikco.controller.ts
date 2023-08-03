@@ -1,5 +1,5 @@
-import { Body, Controller, Get, Param, Patch, Post, UploadedFiles, UseInterceptors, ValidationPipe } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiParam, ApiSecurity, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Get, Param, Patch, Post, Query, UploadedFiles, UseInterceptors, ValidationPipe } from '@nestjs/common';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiParam, ApiQuery, ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { IkcoService } from './ikco.service';
 import { Ikco } from './ikco.model';
 import { CreateIkcoDto } from './dto/create-ikco.dto';
@@ -7,8 +7,9 @@ import { IkcoIdDto } from './dto/id-ikco.dto';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { UpdateIkcoDto } from './dto/update-ikco.dto';
 import { multerConfig } from 'src/utils/multer.config';
-import { ContentFindOneDto } from './dto/content-fineOne.dto';
+// import { ContentFindOneDto } from './dto/content-fineOne.dto';
 import { Content } from './interface/content.interface';
+import { ContentFindOneDto } from './dto/content-fineOne.dto';
 
 @ApiTags('ikco')
 @ApiBearerAuth()
@@ -38,11 +39,12 @@ export class IkcoController {
 
     /**
      * Get a specific Content Ikco car by ID And Field Name.
-     * @param contentFindOneDto The data to get One the Content Ikco car.
      */
-    @Get()
-    getIkcoContent(@Body() contentFindOneDto: ContentFindOneDto): Promise<Content> {
-        return this.ikcoService.getIkcoContent(contentFindOneDto);
+    @Get('/content/:id/name/:fieldName')
+    @ApiParam({ name: 'id', type: String })
+    @ApiParam({ name: 'fieldName', type: String })
+    getIkcoContent(@Param() contentFineOneDto: ContentFindOneDto): Promise<Content> {
+        return this.ikcoService.getIkcoContent(contentFineOneDto);
     }
 
     /**
