@@ -13,7 +13,7 @@ import {
 import { ikco } from './interface/ikco.interface';
 import { content } from './interface/content.interface';
 import { Model } from 'mongoose';
-import { ContentIdDto } from './dto/id-content.dto';
+import { ContentFindOneDto } from './dto/content-fineOne.dto';
 
 @Injectable()
 export class IkcoService {
@@ -28,11 +28,8 @@ export class IkcoService {
         const ikco = await this.ikcoModel.findById({ _id: ikcoId });
         return ikco;
     }
-    async getIkcoContent(contentIdDto: ContentIdDto): Promise<Ikco>{
-        const { id } = contentIdDto;
-        const ikcoId = new ObjectId(id);
-        const ikco = await this.ikcoModel.findById({ _id: ikcoId });
-        return ikco;
+    async getIkcoContent(contentFindOneDto: ContentFindOneDto) {
+        const { id, fieldName } = contentFindOneDto;
     }
     async createIkco(createIkcoDto: CreateIkcoDto): Promise<Ikco>{
         try {
