@@ -1,19 +1,19 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { ObjectId } from 'mongodb';
 import { Ikco } from './ikco.model';
 import { CreateIkcoDto } from './dto/create-ikco.dto';
 import { IkcoIdDto } from './dto/id-ikco.dto';
-import { ObjectId } from 'mongodb';
 import { UpdateIkcoDto } from './dto/update-ikco.dto';
-import { 
-    deleteInvalidPropertyInObject,
-    editPaths,
-    updateContentFunction 
-} from 'src/utils/functions';
-import { ikco } from './interface/ikco.interface';
-import { content } from './interface/content.interface';
-import { Model } from 'mongoose';
 import { ContentFindOneDto } from './dto/content-fineOne.dto';
+import { Content } from './interface/content.interface';
+import {
+  deleteInvalidPropertyInObject,
+  editPaths,
+  updateContentFunction,
+} from 'src/utils/functions';
+import { CreateIkcoFailedException, IkcoNotFoundException, UpdateFailedException } from './custom-exceptions';
 
 @Injectable()
 export class IkcoService {
@@ -22,29 +22,35 @@ export class IkcoService {
     async findAll(): Promise<Ikco[]>{
         return this.ikcoModel.find({}).lean();
     }
+
     async getIkco(ikcoIdDto: IkcoIdDto): Promise<Ikco>{
         const { id } = ikcoIdDto;
         const ikcoId = new ObjectId(id);
         const ikco = await this.ikcoModel.findById({ _id: ikcoId });
         return ikco;
     }
-    async getIkcoContent(contentFindOneDto: ContentFindOneDto) {
+
+    async getIkcoContent(contentFindOneDto: ContentFindOneDto): Promise<Content> {
         const { id, fieldName } = contentFindOneDto;
+        const content = await this.getOneContent(fieldName, id);
+        return content;
     }
+
     async createIkco(createIkcoDto: CreateIkcoDto): Promise<Ikco>{
+        const { car_name } = createIkcoDto;
+        const ikco = new this.ikcoModel({ car_name });
+    
         try {
-            const { car_name } = createIkcoDto;
-            const ikco = new this.ikcoModel({ car_name});
-            return ikco.save();
+          return await ikco.save();
         } catch (error) {
-            throw new Error(error.message);
+          throw new CreateIkcoFailedException(error.message);
         }
     }
+
     async updateIkco(updateIkcoDto: UpdateIkcoDto, files): Promise<object>{
         try {
             const { id, car_name, fieldName, title, description } = updateIkcoDto;
             const { images, videos, pdfs } = editPaths(files);  
-            let UpdateResult = {}
             const content = {
                 title,
                 description,
@@ -53,12 +59,17 @@ export class IkcoService {
                 pdfs
             }
             deleteInvalidPropertyInObject(content);
+            
+            let UpdateResult;   
             if (id) {
                 const oldContent = await this.getOneContent(fieldName, id);
                 const updateContent = updateContentFunction(oldContent, content);
-                UpdateResult = await this.ikcoModel.updateOne({[`${fieldName}._id`]: id}, {
-                    $set: {[`${fieldName}.$`]: updateContent }
-                });
+                UpdateResult = await this.ikcoModel.updateOne(
+                  { [`${fieldName}._id`]: id },
+                  {
+                    $set: {[`${fieldName}.$`]: updateContent },
+                  }
+                );
                 if (!updateContent) throw new Error('Update Failed');
                 UpdateResult = await this.ikcoModel.findOne({ [`${fieldName}._id`]: id }).lean();
             }
@@ -70,36 +81,36 @@ export class IkcoService {
                 });
                 UpdateResult = await this.ikcoModel.findOne({ car_name }).lean();
             }
+            if (!UpdateResult) throw new Error('Update Failed');
             return UpdateResult;
         } catch (error) {
-            throw new Error(error.message);
+            throw new UpdateFailedException();
         }
     }
-    async getOneContent(fieldName, contentId: string): Promise<content> {
-        let ikco: ikco;
-        let content: content;
-        if (fieldName === 'Mechanicals') {
-            ikco = await this.ikcoModel.findOne({ 'Mechanicals._id': contentId });
-            content = ikco?.Mechanicals?.[0]
+
+    async getOneContent(fieldName, contentId: string): Promise<Content> {
+        const fieldsToProperties = {
+          Mechanicals: 'Mechanicals',
+          Injector: 'Injector',
+          Air_bag: 'Air_bag',
+          Wiring: 'Wiring',
+          Engine: 'Engine',
+        };
+        const property = fieldsToProperties[fieldName];
+        if (!property) {
+          throw new BadRequestException('Invalid fieldName');
         }
-        else if (fieldName === 'Injector') {
-            ikco = await this.ikcoModel.findOne({ 'Injector._id': contentId });
-            content = ikco?.Injector?.[0]
+    
+        const ikco = await this.ikcoModel.findOne({ [`${property}._id`]: contentId });
+        const content = ikco?.[property]?.[0];
+    
+        if (!ikco) {
+            throw new IkcoNotFoundException(`fieldName: ${fieldName}, contentId: ${contentId}`);
         }
-        else if (fieldName === 'Air_bag') {
-            ikco = await this.ikcoModel.findOne({ 'Air_bag._id': contentId });
-            content = ikco?.Air_bag?.[0]
+          if (!content) {
+            throw new BadRequestException('Ikco is not defined');
         }
-        else if (fieldName === 'Wiring') {
-            ikco = await this.ikcoModel.findOne({ 'Wiring._id': contentId });
-            content = ikco?.Wiring?.[0]
-        }
-        else if (fieldName === 'Engine') {
-            ikco = await this.ikcoModel.findOne({ 'Engine._id': contentId });
-            content = ikco?.Engine?.[0]
-        }
-        if(!ikco) throw new BadRequestException("No Ikco was found with this specification");
-        if(!content) throw new BadRequestException("ikco is not defined");
-        return content
+      
+        return content;
     }
 }

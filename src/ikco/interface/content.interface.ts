@@ -1,4 +1,4 @@
-export interface content {
+export interface Content {
     _id?: string;
     title: string;
     description: string;

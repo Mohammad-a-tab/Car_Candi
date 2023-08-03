@@ -7,6 +7,8 @@ import { IkcoIdDto } from './dto/id-ikco.dto';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { UpdateIkcoDto } from './dto/update-ikco.dto';
 import { multerConfig } from 'src/utils/multer.config';
+import { ContentFindOneDto } from './dto/content-fineOne.dto';
+import { Content } from './interface/content.interface';
 
 @ApiTags('ikco')
 @ApiBearerAuth()
@@ -32,6 +34,15 @@ export class IkcoController {
     @ApiParam({ name: 'id', description: 'ID of the Ikco car' })
     getIkco(@Param() ikcoIdDto: IkcoIdDto): Promise<Ikco> {
         return this.ikcoService.getIkco(ikcoIdDto);
+    }
+
+    /**
+     * Get a specific Content Ikco car by ID And Field Name.
+     * @param contentFindOneDto The data to get One the Content Ikco car.
+     */
+    @Get()
+    getIkcoContent(@Body() contentFindOneDto: ContentFindOneDto): Promise<Content> {
+        return this.ikcoService.getIkcoContent(contentFindOneDto);
     }
 
     /**

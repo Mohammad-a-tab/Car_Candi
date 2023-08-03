@@ -1,4 +1,4 @@
-import { content } from "src/ikco/interface/content.interface";
+import { Content } from "src/ikco/interface/content.interface";
 
 const allowedImageTypes = ["image/jpg", "image/jpeg", "image/png", "image/webp", "image/gif"];
 const allowedVideoTypes = ["video/mp4", "video/mpg", "video/mov", "video/avi", "video/mkv"];
@@ -43,7 +43,7 @@ export function removeFieldEmpty(obj: { [x: string]: any; }) {
     }
     return obj
 }
-export function updateContentFunction(oldContent: content, newContent: content) {
+export function updateContentFunction(oldContent: Content, newContent: Content) {
     if (newContent?.title) {
         oldContent.title = newContent.title;
     }
