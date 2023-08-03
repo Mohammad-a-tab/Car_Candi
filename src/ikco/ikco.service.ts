@@ -13,6 +13,7 @@ import {
 import { ikco } from './interface/ikco.interface';
 import { content } from './interface/content.interface';
 import { Model } from 'mongoose';
+import { ContentIdDto } from './dto/id-content.dto';
 
 @Injectable()
 export class IkcoService {
@@ -23,6 +24,12 @@ export class IkcoService {
     }
     async getIkco(ikcoIdDto: IkcoIdDto): Promise<Ikco>{
         const { id } = ikcoIdDto;
+        const ikcoId = new ObjectId(id);
+        const ikco = await this.ikcoModel.findById({ _id: ikcoId });
+        return ikco;
+    }
+    async getIkcoContent(contentIdDto: ContentIdDto): Promise<Ikco>{
+        const { id } = contentIdDto;
         const ikcoId = new ObjectId(id);
         const ikco = await this.ikcoModel.findById({ _id: ikcoId });
         return ikco;
