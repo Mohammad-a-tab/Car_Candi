@@ -29,13 +29,13 @@ export const multerConfig = {
   storage: diskStorage({
     destination: (req, file, callback) => {
       if (allowedImageTypes.includes(file.mimetype)) {
-        callback(null, './public/uploads/images');
+        callback(null, './uploads/images');
       }
       if (allowedVideoTypes.includes(file.mimetype)) {
-        callback(null, './public/uploads/videos');
+        callback(null, './uploads/videos');
       }
       if (file.mimetype === "application/pdf") {  
-        callback(null, './public/uploads/pdfs');
+        callback(null, './uploads/pdfs');
       }
     },
     filename: (req, file, callback) => {

@@ -1,4 +1,6 @@
 import { Content } from "src/ikco/interface/content.interface";
+import * as path from 'path';
+import * as fs from 'fs';
 
 const allowedImageTypes = ["image/jpg", "image/jpeg", "image/png", "image/webp", "image/gif"];
 const allowedVideoTypes = ["video/mp4", "video/mpg", "video/mov", "video/avi", "video/mkv"];
@@ -25,6 +27,7 @@ export function editPaths(files: any) {
 
     return {images, pdfs, videos };
 }
+
 export function deleteInvalidPropertyInObject(data = {}, blackListFields = []): void {
     let nullishData = ["", " ", "0", 0, null, undefined]
     Object.keys(data).forEach(key => {
@@ -35,6 +38,7 @@ export function deleteInvalidPropertyInObject(data = {}, blackListFields = []): 
         if(nullishData.includes(data[key])) delete data[key];
     });
 }
+
 export function removeFieldEmpty(obj: { [x: string]: any; }) {
     for (let key in obj) {
         if (obj[key] === null || obj[key].length === 0 || obj[key] === undefined || obj[key] === '') {
@@ -43,6 +47,7 @@ export function removeFieldEmpty(obj: { [x: string]: any; }) {
     }
     return obj
 }
+
 export function updateContentFunction(oldContent: Content, newContent: Content) {
     if (newContent?.title) {
         oldContent.title = newContent.title;
@@ -57,3 +62,17 @@ export function updateContentFunction(oldContent: Content, newContent: Content) 
     return oldContent;
 }
 
+export function deleteFilePublic(fileAddress) {
+    if (!Array.isArray(fileAddress) && fileAddress?.length > 0) {
+        const pathFile = path.join(__dirname, "..", "..", "public", fileAddress)
+        if (fs.existsSync(pathFile)) fs.unlinkSync(pathFile)
+    }else if(Array.isArray(fileAddress) && fileAddress.length > 0){
+       for (const image of fileAddress) {
+        const pathFile = path.join(__dirname, "..", "..", "public", image)
+        if (fs.existsSync(pathFile)) fs.unlinkSync(pathFile)
+       }
+    }else if(fileAddress == null || undefined || "" || [""]){
+        return "Not found"
+    }
+
+}
