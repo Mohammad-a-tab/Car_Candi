@@ -89,6 +89,15 @@ export class IkcoService {
         }
     }
 
+    async deleteIkco(id: string): Promise<object> {
+        try {
+          const deleteResult = await this.ikcoModel.deleteOne({ _id: id });
+          return deleteResult;
+        } catch (error) {
+          
+        }
+    }
+
     async getOneContent(fieldName, contentId: string): Promise<Content> {
         const fieldsToProperties = {
           Mechanicals: 'Mechanicals',

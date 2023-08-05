@@ -17,6 +17,12 @@ export class CreateIkcoFailedException extends BadRequestException {
       super(`Failed to create Ikco: ${message}`);
     }
 }
+
+export class RemoveIkcoFailedException extends BadRequestException {
+    constructor(message: string) {
+      super(`Failed to remove Ikco: ${message}`);
+    }
+}
 export class UpdateFailedException extends BadRequestException {
   constructor() {
     super('Update Failed');
