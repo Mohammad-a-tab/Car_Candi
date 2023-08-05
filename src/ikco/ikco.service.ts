@@ -13,7 +13,7 @@ import {
   editPaths,
   updateContentFunction,
 } from 'src/utils/functions';
-import { CreateIkcoFailedException, IkcoNotFoundException, UpdateFailedException } from './custom-exceptions';
+import { CreateIkcoFailedException, IkcoNotFoundException, RemoveIkcoFailedException, UpdateFailedException } from './custom-exceptions';
 import { ContentFindOneDto } from './dto/content-fineOne.dto';
 
 @Injectable()
@@ -93,8 +93,9 @@ export class IkcoService {
         try {
           const deleteResult = await this.ikcoModel.deleteOne({ _id: id });
           return deleteResult;
+
         } catch (error) {
-          
+          throw new RemoveIkcoFailedException(error.message);
         }
     }
 
