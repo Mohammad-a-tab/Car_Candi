@@ -99,4 +99,14 @@ export class IkcoController {
     async deleteIkco(@Param() id: string) {
         return this.ikcoService.deleteIkco(id);
     }
+
+    /**
+     * Remove Content Ikco car.
+     */
+    @Delete('content/:id/name/:fieldName')
+    @ApiParam({ name: 'id', type: String })
+    @ApiParam({ name: 'fieldName', type: String })
+    async deleteContentIkco(@Param() contentFindOneDto: ContentFindOneDto) {
+        return this.ikcoService.deleteContentIkco(contentFindOneDto);
+    }
 }

@@ -100,6 +100,25 @@ export class IkcoService {
         }
     }
 
+    async deleteContentIkco(contentFindOneDto: ContentFindOneDto): Promise<object> {
+        try {
+          const { id, fieldName } = contentFindOneDto;
+          const deleteResult = await this.ikcoModel.updateOne({ [`${fieldName}._id`]: id }, 
+            {
+              $pull: {
+                [fieldName]: {
+                     _id: id
+                }
+              }
+            }
+          );
+          return deleteResult;
+
+        } catch (error) {
+          throw new RemoveIkcoFailedException(error.message);
+        }
+    }
+
     async getOneContent(fieldName, contentId: string): Promise<Content> {
         const fieldsToProperties = {
           Mechanicals: 'Mechanicals',
