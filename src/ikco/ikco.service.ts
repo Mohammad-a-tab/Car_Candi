@@ -42,7 +42,7 @@ export class IkcoService {
         const ikco = new this.ikcoModel({ car_name });
     
         try {
-          return await ikco.save();
+          if (await this.checkExists(car_name) === true) return await ikco.save();
         } catch (error) {
           throw new CreateIkcoFailedException(error.message);
         }
@@ -144,5 +144,14 @@ export class IkcoService {
         }
       
         return content;
+    }
+
+    async checkExists(car_name: string): Promise<boolean> {
+        const ikco = await this.ikcoModel.findOne({ car_name });
+
+        if(!ikco) return true;
+        else {
+          return false;
+        }
     }
 }
