@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post, Query, UploadedFiles, UseInterceptors, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UploadedFiles, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiParam, ApiQuery, ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { IkcoService } from './ikco.service';
 import { Ikco } from './ikco.model';
@@ -89,5 +89,14 @@ export class IkcoController {
         @UploadedFiles(new ValidationPipe()) files
     ) {        
         return this.ikcoService.updateIkco(updateIkcoDto, files);        
+    }
+
+    /**
+     * Remove Ikco car.
+     */
+    @Delete(':id')
+    @ApiParam({ name: 'id', type: String })
+    async deleteIkco(@Param() id: string) {
+        return this.ikcoService.deleteIkco(id);
     }
 }
