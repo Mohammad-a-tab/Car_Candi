@@ -91,7 +91,8 @@ export class IkcoService {
 
     async deleteIkco(id: string): Promise<object> {
         try {
-          const deleteResult = await this.ikcoModel.deleteOne({ _id: id });
+          const ikcoId = new ObjectId(id);
+          const deleteResult = await this.ikcoModel.deleteOne({ _id: ikcoId });
           return deleteResult;
 
         } catch (error) {
