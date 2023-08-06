@@ -62,17 +62,27 @@ export function updateContentFunction(oldContent: Content, newContent: Content) 
     return oldContent;
 }
 
-export function deleteFilePublic(fileAddress) {
-    if (!Array.isArray(fileAddress) && fileAddress?.length > 0) {
-        const pathFile = path.join(__dirname, "..", "..", "public", fileAddress)
-        if (fs.existsSync(pathFile)) fs.unlinkSync(pathFile)
-    }else if(Array.isArray(fileAddress) && fileAddress.length > 0){
-       for (const image of fileAddress) {
-        const pathFile = path.join(__dirname, "..", "..", "public", image)
+export function deleteFilePublic(files: any) {
+    const { images, videos, pdfs } = editPaths(files);
+    if(images?.length > 0) {
+       for (const image of images) {
+        const pathFile = path.join(__dirname, "..", "..", image)
         if (fs.existsSync(pathFile)) fs.unlinkSync(pathFile)
        }
-    }else if(fileAddress == null || undefined || "" || [""]){
+    }
+    if(videos?.length > 0) {
+       for (const video of videos) {
+        const pathFile = path.join(__dirname, "..", "..", video)
+        if (fs.existsSync(pathFile)) fs.unlinkSync(pathFile)
+       }
+    }
+    if(pdfs?.length > 0) {
+       for (const pdf of pdfs) {
+        const pathFile = path.join(__dirname, "..", "..", pdf)
+        if (fs.existsSync(pathFile)) fs.unlinkSync(pathFile)
+       }
+    }
+    if(images || videos || pdfs == null || undefined || "" || [""]){
         return "Not found"
     }
-
 }

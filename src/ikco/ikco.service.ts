@@ -9,6 +9,7 @@ import { UpdateIkcoDto } from './dto/update-ikco.dto';
 // import { ContentFindOneDto } from './dto/content-fineOne.dto';
 import { Content } from './interface/content.interface';
 import {
+  deleteFilePublic,
   deleteInvalidPropertyInObject,
   editPaths,
   updateContentFunction,
@@ -85,6 +86,7 @@ export class IkcoService {
             if (!UpdateResult) throw new Error('Update Failed');
             return UpdateResult;
         } catch (error) {
+            deleteFilePublic(files);
             throw new UpdateFailedException();
         }
     }
