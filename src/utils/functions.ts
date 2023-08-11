@@ -39,7 +39,7 @@ export function deleteInvalidPropertyInObject(data = {}, blackListFields = []): 
     });
 }
 
-export function removeFieldEmpty(obj: { [x: string]: any; }) {
+export function removeFieldEmpty(obj: { [x: string]: any; }) { 
     for (let key in obj) {
         if (obj[key] === null || obj[key].length === 0 || obj[key] === undefined || obj[key] === '') {
             delete obj[key];
