@@ -12,6 +12,7 @@ import { RamackCarModule } from './ramack_car/ramack_car.module';
 import { ToyotaModule } from './toyota/toyota.module';
 import { ZamyadModule } from './zamyad/zamyad.module';
 import { MongooseModule } from '@nestjs/mongoose';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -27,7 +28,7 @@ import { MongooseModule } from '@nestjs/mongoose';
     ParsCarModule, 
     RamackCarModule, 
     ToyotaModule, 
-    ZamyadModule
+    ZamyadModule, AuthModule
   ],
 })
 export class AppModule {}
