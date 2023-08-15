@@ -5,11 +5,11 @@ import { UsersService } from 'src/users/users.service';
 @Injectable()
 export class AuthService {
     constructor(
-        private usersService: UsersService,
-        private jwtService: JwtService
+        // private usersService: UsersService,
+        // private jwtService: JwtService
     ) {}
 
-    async signIn() {
-        
-    }
+    // async signIn() {
+
+    // }
 }
